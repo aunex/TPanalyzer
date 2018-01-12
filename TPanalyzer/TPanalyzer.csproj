@@ -70,11 +70,11 @@
     <Compile Include="IDListForm.Designer.cs">
       <DependentUpon>IDListForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="txtFileSelector.cs">
+    <Compile Include="TxtFileSelector.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="txtFileSelector.Designer.cs">
-      <DependentUpon>txtFileSelector.cs</DependentUpon>
+    <Compile Include="TxtFileSelector.Designer.cs">
+      <DependentUpon>TxtFileSelector.cs</DependentUpon>
     </Compile>
     <Compile Include="UniversalFilterForm.cs">
       <SubType>Form</SubType>
@@ -93,8 +93,8 @@
     <EmbeddedResource Include="IDListForm.resx">
       <DependentUpon>IDListForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="txtFileSelector.resx">
-      <DependentUpon>txtFileSelector.cs</DependentUpon>
+    <EmbeddedResource Include="TxtFileSelector.resx">
+      <DependentUpon>TxtFileSelector.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UniversalFilterForm.resx">
       <DependentUpon>UniversalFilterForm.cs</DependentUpon>

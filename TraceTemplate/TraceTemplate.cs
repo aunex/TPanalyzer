@@ -749,6 +749,28 @@ namespace traceTemplate
             OnTraceRowBottom_ChangeSelection(e);
         }
 
-        //TODO: Dodelat copy, select all atd funkce do richtext boxu
+        private void sellectAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rtbDetailsTop.SelectAll();
+            rtbDetailsTop.Update();
+            rtbDetailsTop.Refresh();
+        }
+
+        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(rtbDetailsTop.SelectedText);
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            rtbDetailsBottom.SelectAll();
+            rtbDetailsBottom.Update();
+            rtbDetailsBottom.Refresh();
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(rtbDetailsBottom.SelectedText);
+        }
     }
 }

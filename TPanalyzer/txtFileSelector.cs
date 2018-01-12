@@ -10,13 +10,13 @@ using System.Windows.Forms;
 
 namespace TPanalyzer
 {
-    public partial class txtFileSelector : Form
+    public partial class TxtFileSelector : Form
     {
         public int formatSelection = 0;
         private DialogResult thisResult = DialogResult.None;
 
 
-        public txtFileSelector()
+        public TxtFileSelector()
         {
             InitializeComponent();
             this.Visible = false;

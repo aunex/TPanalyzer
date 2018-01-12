@@ -19,7 +19,7 @@ using IDselector;
 
 namespace TPanalyzer
 {
-    public struct oneUdsServiceInfo
+    public struct oneDiagServiceInfo
     {
         public enum Sid
         {
@@ -94,7 +94,36 @@ namespace TPanalyzer
         }
         public Sid sid;
         public byte[] parameters;
-        public bool validUdsData;
+        public bool validData;       // frame contain the correct number of bytes for all bytes = true
+
+        public oneDiagServiceInfo(Sid mySID, byte[] pars)
+        {
+            sid = mySID;
+            parameters = pars;
+            validData = true;
+        }
+    }
+
+    public struct DiagServiceconfig
+    {   // template/structure with information about every KWP and UDS service
+        oneDiagServiceInfo.Sid sid;
+        int parByteCount;
+        string shortName;
+        string longName;
+        string[] parNames;
+        int[] startBits;
+        int[] endBits;
+
+        public DiagServiceconfig(oneDiagServiceInfo.Sid newSID, int newParByteCount, string newShortName, string newLongName, string[] newParNames, int[] newStartBits, int[] newEndtBits)
+        {
+            sid = newSID;
+            parByteCount = newParByteCount;
+            shortName = newShortName;
+            longName = newLongName;
+            parNames = newParNames;
+            startBits = newStartBits;
+            endBits = newEndtBits;
+        }
     }
 
     public struct stringTraceInterface
@@ -326,11 +355,68 @@ namespace TPanalyzer
 
         }
         
-        public class UdsServiceInformation
+        public class DiagFrameInformation
         {
-            public oneUdsServiceInfo[] services { get; set; }
+
+
+            public int servicesCount;
+            public oneDiagServiceInfo[] services { get; set; }
+
+
+            public DiagFrameInformation()
+            {
+                servicesCount = 0;
+                this.services = new oneDiagServiceInfo[15];
+            }
+
+            public void AddService(oneDiagServiceInfo.Sid sid, byte[] pars)
+            {
+                servicesCount++;
+                services[servicesCount] = new oneDiagServiceInfo(sid, pars);
+            }
+
+            public void clearAllServices()
+            {       // only set the pointer to zero
+                servicesCount = 0;
+            }
         }
 
+
+        public List<DiagServiceconfig> UDSCONFIG = new List<DiagServiceconfig>()
+        {
+            {new DiagServiceconfig(oneDiagServiceInfo.Sid.ClearDiagInfo, 1, "ClearDiagInfo", "Clear diagnostic information",new string[1] {"GroupOfDTC"}, new int [1] {0}, new int [1] {21})},
+            {new DiagServiceconfig(oneDiagServiceInfo.Sid.DiagnosticSessionControl, 2, "DiagSessionControl", "Diagnostic session control",new string[2] {"SPR", "DiagnosticSessionType"}, new int [2] {0,1}, new int [2] {1, 7})}
+        };
+
+        //{ oneUdsServiceInfo.Sid.ClearDiagInfo, 1 },
+        //{ oneUdsServiceInfo.Sid.CommunicationControl, 1 },
+        //{ oneUdsServiceInfo.Sid.ControlDTCSettings, 1 },
+        //{ oneUdsServiceInfo.Sid.DiagnosticSessionControl, 1 },
+        //{ oneUdsServiceInfo.Sid.DynamicallyDefineDataIdentifier, 1 },
+        //{ oneUdsServiceInfo.Sid.ECUReset, 1 },
+        //{ oneUdsServiceInfo.Sid.InOutControlByIdentifier, 1 },
+        //{ oneUdsServiceInfo.Sid.LinkControl, 1 },
+        //{ oneUdsServiceInfo.Sid.NegativeResponse, 1 },
+        //{ oneUdsServiceInfo.Sid.PosResp_AccesTimingParameters, 1 },
+        //{ oneUdsServiceInfo.Sid.PosResp_ClearDiagInfo, 1 },
+        //{ oneUdsServiceInfo.Sid.PosResp_CommunicationControl, 1 },
+        //{ oneUdsServiceInfo.Sid.PosResp_ControlDTCSettings, 1 },
+        //{ oneUdsServiceInfo.Sid.PosResp_DiagnosticSessionControl, 1 },
+        //{ oneUdsServiceInfo.Sid.PosResp_DynamicallyDefineDataIdentifier, 1 },
+        //{ oneUdsServiceInfo.Sid.PosResp_ECUReset, 1 },
+        //{ oneUdsServiceInfo.Sid.PosResp_InOutControlByIdentifier, 1 },
+        //{ oneUdsServiceInfo.Sid.PosResp_LinkControl,1 },
+        //{ oneUdsServiceInfo.Sid.PosResp_ReadDataById, 1 },
+        //{ oneUdsServiceInfo.Sid.PosResp_ReadDataByPeriodicIdentifier, 1 },
+        //{ oneUdsServiceInfo.Sid.PosResp_ReadDiagInfo, 1 },
+        //{ oneUdsServiceInfo.Sid.PosResp_ReadMemoryByAddress, 1 },
+        //{ oneUdsServiceInfo.Sid.PosResp_ReadScalingDataByIdentifier, 1 },
+        //{ oneUdsServiceInfo.Sid.PosResp_ReadDataByPeriodicIdentifier, 1 },
+        //{ oneUdsServiceInfo.Sid.PosResp_ReadDataByPeriodicIdentifier, 1 },
+        //{ oneUdsServiceInfo.Sid.PosResp_ReadDataByPeriodicIdentifier, 1 },
+        //{ oneUdsServiceInfo.Sid.PosResp_ReadDataByPeriodicIdentifier, 1 },
+
+            
         // ===========================================================================================================================================================
 
         static BackgroundWorker bwParseTrace;    // Background worker for running analysis of ASC file in the seperate thread
@@ -342,10 +428,10 @@ namespace TPanalyzer
         public DataTable[] dtTracesA = new DataTable[MAXCOUNTOFTABS];    // dataTable as a datasource for datagridview on the Top of trace teplate
         public DataTable[] dtTracesB = new DataTable[MAXCOUNTOFTABS];    // dataTable as a datasource for datagridview on the Bottom of trace teplate
         public List<IsoTpInformation>[] isoTpInfoList = new List<IsoTpInformation>[MAXCOUNTOFTABS];             // ISO-TP information array - for every tab is seperate
-        public List<UdsServiceInformation>[] udsKwpInfoList = new List<UdsServiceInformation>[MAXCOUNTOFTABS];  // UDS information array - for every tab is seperate
+        public List<DiagFrameInformation>[] diagInfoList = new List<DiagFrameInformation>[MAXCOUNTOFTABS];  // UDS information array - for every tab is seperate
         private TraceTemplate[] traceTemplates = new TraceTemplate[MAXCOUNTOFTABS];             // trace template array - main visual component on working tab - dynamically created for every new tab
         private IDListForm idListForm;
-        private txtFileSelector txtSelector;
+        private TxtFileSelector txtSelector;
         public List<isoTPChannelConfig> isoTpIdList = new List<isoTPChannelConfig>();    // list with IDs which are supposed to contain ISO-TP data coding (including alias and UDS/KWP selector) 
 
 
@@ -425,7 +511,7 @@ namespace TPanalyzer
             tabControlTraces.TabPages.Add(tabName, tabName, numOfTraces);
             tabControlTraces.SelectedIndex = numOfTraces;   // activate new tab imediatelly
             isoTpInfoList[number] = new List<IsoTpInformation>();
-            udsKwpInfoList[number] = new List<UdsServiceInformation>();
+            diagInfoList[number] = new List<DiagFrameInformation>();
 
             traceTemplates[number] = new TraceTemplate {Dock = DockStyle.Fill};
             tabControlTraces.TabPages[number].Controls.Add(traceTemplates[number]);
@@ -460,7 +546,7 @@ namespace TPanalyzer
                 if (fileExtension == ".txt")
                 {
                     fileFormatIsClear = false;
-                    txtSelector = new txtFileSelector();
+                    txtSelector = new TxtFileSelector();
                     var DialogResult = txtSelector.ShowDialog();
                     if (DialogResult == DialogResult.OK)
                     {
@@ -524,7 +610,7 @@ namespace TPanalyzer
                 dtTracesA[activeTabIndex].Clear();
                 dtTracesA[activeTabIndex].Dispose();
                 isoTpInfoList[activeTabIndex].Clear();
-                udsKwpInfoList[activeTabIndex].Clear();
+                diagInfoList[activeTabIndex].Clear();
             }
 
             if (dtTracesB[activeTabIndex] != null)
@@ -893,7 +979,7 @@ namespace TPanalyzer
             int id = 0;
             Byte[] dataByte = new Byte[8];
             IsoTpInformation tpInfo = new IsoTpInformation();
-            UdsServiceInformation udsKwpInfo = new UdsServiceInformation();
+            DiagFrameInformation diagFrameInfo = new DiagFrameInformation();
             bool goOnWithParsing = true;
 
 
@@ -978,15 +1064,15 @@ namespace TPanalyzer
                             {
                                 strIsoTpDetails = string.Format("FF, DL = {0}", tpInfo.higherLayerDataLength.ToString());
                                 strUdsKwp = strInterface.strData.Substring((tpInfo.byteCount * 5), (5 * (8 - tpInfo.byteCount)) - 2);
-                                udsKwpInfoList[activeTabIndex].Add(null);
+                                diagInfoList[activeTabIndex].Add(null);
                             }
                             else if (tpInfo.frameType == IsoTpInformation.FrameType.Single)
                             {
                                 strIsoTpDetails = string.Format("SF, DL = {0}", tpInfo.higherLayerDataLength.ToString());
                                 strUdsKwp = strInterface.strData.Substring((tpInfo.byteCount * 5), (5 * (tpInfo.higherLayerDataLength)) - 2);
-                                udsKwpInfo = parseUDSKWPData(tpInfo.higherLayerData);
-                                udsKwpInfoList[activeTabIndex].Add(udsKwpInfo);
-                                strUdsKwpDetails = string.Format("{0}", udsKwpInfo.services[0].sid.ToString());
+                                diagFrameInfo = parseDiagData(tpInfo.higherLayerData);
+                                diagInfoList[activeTabIndex].Add(diagFrameInfo);
+                                strUdsKwpDetails = string.Format("{0}, Parameters count = {1}", diagFrameInfo.services[0].sid.ToString(), diagFrameInfo.services[0].parameters.Length);
                             }
                             else if (tpInfo.frameType == IsoTpInformation.FrameType.Consecutive)
                             {
@@ -994,40 +1080,40 @@ namespace TPanalyzer
                                 if (tpInfo.higherLayerData != null) // consecutive frame with higher layer data is the last one = whole frame is finished
                                 {   // last consecutive frame
                                     strUdsKwp = strInterface.strData.Substring((tpInfo.byteCount * 5), (5 * (8 - tpInfo.byteCount)) - 2);
-                                    udsKwpInfo = parseUDSKWPData(tpInfo.higherLayerData);
-                                    udsKwpInfoList[activeTabIndex].Add(udsKwpInfo);
-                                    strUdsKwpDetails = string.Format("{0}", udsKwpInfo.services[0].sid.ToString());
+                                    diagFrameInfo = parseDiagData(tpInfo.higherLayerData);
+                                    diagInfoList[activeTabIndex].Add(diagFrameInfo);
+                                    strUdsKwpDetails = string.Format("{0}, Parameters count = {1}", diagFrameInfo.services[0].sid.ToString(), diagFrameInfo.services[0].parameters.Length);
                                 }
                                 else
                                 {
                                     strUdsKwp = strInterface.strData.Substring((tpInfo.byteCount * 5), (5 * (8 - tpInfo.byteCount)) - 2);
-                                    udsKwpInfoList[activeTabIndex].Add(null);
+                                    diagInfoList[activeTabIndex].Add(null);
                                 }
                                 
                             }
                             else if (tpInfo.frameType == IsoTpInformation.FrameType.Flowcontrol)
                             {
                                 strIsoTpDetails = string.Format("FCF, Flag = {0}, BS = {1}, STmin = {2}", tpInfo.fcFlag, tpInfo.blockSize.ToString(), tpInfo.separationTime.ToString());
-                                udsKwpInfoList[activeTabIndex].Add(null);
+                                diagInfoList[activeTabIndex].Add(null);
                             }
                         }
                         else
                         {
                             isoTpInfoList[activeTabIndex].Add(null);
-                            udsKwpInfoList[activeTabIndex].Add(null);
+                            diagInfoList[activeTabIndex].Add(null);
                         }
                     }
                     else
                     { 
                         isoTpInfoList[activeTabIndex].Add(null);
-                        udsKwpInfoList[activeTabIndex].Add(null);
+                        diagInfoList[activeTabIndex].Add(null);
                     }
                 }
                 else
                 {   // all values in lists must be null
                     strInterface.strDLC = "";   // if the frame is not CAN, hide the zero in the DLC field
                     isoTpInfoList[activeTabIndex].Add(null);
-                    udsKwpInfoList[activeTabIndex].Add(null);
+                    diagInfoList[activeTabIndex].Add(null);
                 }
                 dtTracesA[activeTabIndex].Rows.Add(new object[]{floatTimestamp, strInterface.strType, strInterface.strChannel, strInterface.strId, strAlias, strInterface.strDirection, dlc, strInterface.strData, strIsoTp, strIsoTpDetails, strUdsKwp, strUdsKwpDetails, strInterface.strOthers });
                 dtTracesB[activeTabIndex].Rows.Add(new object[]{floatTimestamp, strInterface.strType, strInterface.strChannel, strInterface.strId, strAlias, strInterface.strDirection, dlc, strInterface.strData, strIsoTp, strIsoTpDetails, strUdsKwp, strUdsKwpDetails, strInterface.strOthers });
@@ -1163,32 +1249,338 @@ namespace TPanalyzer
             return result;
         }
 
-        public UdsServiceInformation parseUDSKWPData(Byte[] dataToParse)
+        public int getNumberOfDiagParBytes(oneDiagServiceInfo.Sid sid)
         {
-            UdsServiceInformation result = new UdsServiceInformation();
-            result.services = new oneUdsServiceInfo[12];
-            result.services[0].sid = (oneUdsServiceInfo.Sid)(dataToParse[0]);
-            int byteParametersCount = 0;
-            int i = 0;
-            switch (result.services[0].sid)
+            int result = -1;
+
+            switch (sid)
             {
-                case oneUdsServiceInfo.Sid.ClearDiagInfo:
-                {
-                    byteParametersCount = 3;
-                    result.services[0].validUdsData = false;
-                    break;
-                }
+                case (oneDiagServiceInfo.Sid.AccesTimingParameters):
+                    {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                    }
+                case (oneDiagServiceInfo.Sid.ClearDiagInfo):
+                    {
+                        result = 3;        
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.CommunicationControl):
+                    {
+                        result = 2;       
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.ControlDTCSettings):
+                    {
+                        result = 4;      
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.DiagnosticSessionControl):
+                    {
+                        result = 1;
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.DynamicallyDefineDataIdentifier):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.ECUReset):
+                    {
+                        result = 1;  
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.InOutControlByIdentifier):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.LinkControl):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.NegativeResponse):
+                    {
+                        result = 2;       
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_AccesTimingParameters):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_ClearDiagInfo):
+                    {
+                        result = 0;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_CommunicationControl):
+                    {
+                        result = 1; 
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_ControlDTCSettings):
+                    {
+                        result = 1;  
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_DiagnosticSessionControl):
+                    {
+                        result = 5;  
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_DynamicallyDefineDataIdentifier):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_ECUReset):
+                    {
+                        result = 1;        
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_InOutControlByIdentifier):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_LinkControl):
+                    {
+                        result = 1;       
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_ReadDataById):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_ReadDataByPeriodicIdentifier):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_ReadDiagInfo):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_ReadMemoryByAddress):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_ReadScalingDataByIdentifier):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_RequestDownload):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_RequestFileTransfer):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_RequestTransferExit):
+                    {
+                        result = 0; 
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_RequestUpload):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_ResponseOnEvent):
+                    {
+                        result = 6;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_RoutineControl):
+                    {
+                        result = 6;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_SecuredDataTransmission):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_SecurityAcces):
+                    {
+                        result = -1;        // not fix number of parameters bytes in case of seed transfer = 5 and in case of key acknowledge = 1
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_TesterPresent):
+                    {
+                        result = 0;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_TransferDat):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_WriteDataById):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.PosResp_WriteMemoryByAddress):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.ReadDataById):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.ReadDataByPeriodicIdentifier):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.ReadDiagInfo):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.ReadMemoryByAddress):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.ReadScalingDataByIdentifier):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.RequestDownload):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.RequestFileTransfer):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.RequestTransferExit):
+                    {
+                        result = 0; 
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.RequestUpload):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.ResponseOnEvent):
+                    {
+                        result = 6; 
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.RoutineControl):
+                    {
+                        result = 6;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.SecuredDataTransmission):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.SecurityAcces):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.TesterPresent):
+                    {
+                        result = 1; 
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.TransferDat):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.WriteDataById):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.WriteMemoryByAddress):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+
                 default:
                 {
-                    result.services[0].validUdsData = false;
-                    byteParametersCount = 0;
-                    break;
+                        result = -1;
+                        break;
                 }
             }
-            result.services[0].parameters = new byte[byteParametersCount];
-            for (i = 0; i < byteParametersCount; i++)
+
+
+            return result;
+        }
+
+        public DiagFrameInformation parseDiagData(Byte[] dataToParse)
+        {
+            DiagFrameInformation result = new DiagFrameInformation();
+            int pointer = 0;
+            int tempByteCount = 0;
+
+            tempByteCount = getNumberOfDiagParBytes((oneDiagServiceInfo.Sid)(dataToParse[pointer]));
+
+            if (tempByteCount == 0)
             {
-                result.services[0].parameters[i] = dataToParse[i + 1];
+                result.services[result.servicesCount] = new oneDiagServiceInfo((oneDiagServiceInfo.Sid)(dataToParse[pointer]), new byte[0]);//
+                result.services[result.servicesCount].sid = (oneDiagServiceInfo.Sid)(dataToParse[pointer]);
+            }
+
+            else if (tempByteCount == -1)
+            {
+                result.services[result.servicesCount] = new oneDiagServiceInfo((oneDiagServiceInfo.Sid)(dataToParse[pointer]), new byte[(dataToParse.Length - 1)]);
+                result.services[result.servicesCount].sid = (oneDiagServiceInfo.Sid)(dataToParse[pointer]);
+                for (int i = 0; i < (dataToParse.Length-1); i++)
+                {
+                    if ((pointer + 1 + i) <= dataToParse.Length)
+                    {
+                        result.services[result.servicesCount].parameters[i] = dataToParse[pointer + 1 + i];
+                    }
+                    else
+                    {
+                        result.services[result.servicesCount].validData = false;
+                    }
+                    pointer += (dataToParse.Length);
+                }
+
+            }
+
+            else if (tempByteCount > 0)
+            {
+                result.services[result.servicesCount] = new oneDiagServiceInfo((oneDiagServiceInfo.Sid)(dataToParse[pointer]), new byte[tempByteCount]);//
+                result.services[result.servicesCount].sid = (oneDiagServiceInfo.Sid)(dataToParse[pointer]);
+                for (int i = 0; i < tempByteCount; i++)
+                {
+                    if ((pointer + 1 + i) <= dataToParse.Length)
+                    {
+                        result.services[result.servicesCount].parameters[i] = dataToParse[pointer + 1 + i];
+                    }
+                    else
+                    {
+                        result.services[result.servicesCount].validData = false;
+                    }
+                    pointer += tempByteCount + 1;
+                }
             }
             return result;
         }
@@ -1272,18 +1664,85 @@ namespace TPanalyzer
 
                             }
 
-                            if (udsKwpInfoList[activeTabIndex][rowIndex] != null)
+                            if (diagInfoList[activeTabIndex][rowIndex] != null)
                             {
                                 result += "UDS / KWP  details:\n";
-                                result += "Service = " + udsKwpInfoList[activeTabIndex][rowIndex].services[0].sid.ToString() + " (" + udsKwpInfoList[activeTabIndex][rowIndex].services[0].sid + ")\n\n";
+                                result += string.Format("Service = {0} (0x{1}) \n\n", diagInfoList[activeTabIndex][rowIndex].services[0].sid.ToString(), ((int)(diagInfoList[activeTabIndex][rowIndex].services[0].sid)).ToString("X2"));
 
                             }
                     }
+                    result += "=========================================================================\n";
                 }
             }
             else if (rowSelected.Count == 2)     // double line detail
             {
+                foreach (DataGridViewRow row in rowSelected)
+                {
+                    int rowIndex = row.Index;
+                    result += "Details for single selected message:\n\n";
+                    result += "Selected row = " + rowIndex.ToString() + "\n";
+                    if (dtTracesA[activeTabIndex].Rows[rowIndex] != null)
+                    {
+                        result += "Timestamp = " + dtTracesA[activeTabIndex].Rows[rowIndex].Field<float>(0).ToString() + "\n";
+                        result += "Type of record = " + dtTracesA[activeTabIndex].Rows[rowIndex].Field<string>(1) + "\n";
+                        result += "Identifier = " + dtTracesA[activeTabIndex].Rows[rowIndex].Field<string>(3) + "\n";
+                        result += "CAN message data = " + dtTracesA[activeTabIndex].Rows[rowIndex].Field<string>(7) + "\n\n";
+                    }
 
+                    if ((row != null) && (rowIndex > 0) && (rowIndex < isoTpInfoList[activeTabIndex].Count))
+                    {
+                        if (isoTpInfoList[activeTabIndex][rowIndex] != null)
+                        {
+                            result += "ISO-TP details:\n";
+                            result += "Network address information  (n_AI): " + isoTpInfoList[activeTabIndex][rowIndex].n_AI + "\n";
+                            if (isoTpInfoList[activeTabIndex][rowIndex].n_TA != -1)
+                            {
+                                result += "Network target address (n_TA): " + isoTpInfoList[activeTabIndex][rowIndex].n_TA + "\n";
+                            }
+                            result += "N_PDU type : " + isoTpInfoList[activeTabIndex][rowIndex].frameType.ToString() + "\n";
+                            if (isoTpInfoList[activeTabIndex][rowIndex].frameType == IsoTpInformation.FrameType.First)
+                            {
+                                result += "Higher layer data length: " + isoTpInfoList[activeTabIndex][rowIndex].higherLayerDataLength.ToString() + "\n\n";
+                                result += "WholeFrameDataCount: " + isoTpInfoList[activeTabIndex][rowIndex].higherLayerDataLength.ToString() + "\n";
+                            }
+
+                            if (isoTpInfoList[activeTabIndex][rowIndex].frameType == IsoTpInformation.FrameType.Single)
+                            {
+                                result += "Higher layer data length: " + isoTpInfoList[activeTabIndex][rowIndex].higherLayerDataLength.ToString() + "\n\n";
+                            }
+
+                            if (isoTpInfoList[activeTabIndex][rowIndex].frameType == IsoTpInformation.FrameType.Consecutive)
+                            {
+                                result += "Consecutive frame index: " + isoTpInfoList[activeTabIndex][rowIndex].consIndex.ToString() + "\n";
+                                if (isoTpInfoList[activeTabIndex][rowIndex].higherLayerData != null)
+                                {
+                                    result += "Higher layer data:\n" + BitConverter.ToString(isoTpInfoList[activeTabIndex][rowIndex].higherLayerData).Replace("-", "  ") + "\n\n";
+                                }
+                            }
+
+                            if (isoTpInfoList[activeTabIndex][rowIndex].frameType == IsoTpInformation.FrameType.Flowcontrol)
+                            {
+                                result += "Flow control flag: " + isoTpInfoList[activeTabIndex][rowIndex].fcFlag + "\n";
+                                result += "Separation time: " + isoTpInfoList[activeTabIndex][rowIndex].separationTime.ToString() + "\n";
+                                result += "Block size: " + isoTpInfoList[activeTabIndex][rowIndex].blockSize.ToString() + "\n";
+                                result += "Higher layer data length: " + isoTpInfoList[activeTabIndex][rowIndex].higherLayerDataLength.ToString() + "\n\n";
+                            }
+                            else
+                            {// for all frametypes except flowcontrol add the data to the end of details
+
+                            }
+
+                        }
+
+                        if (diagInfoList[activeTabIndex][rowIndex] != null)
+                        {
+                            result += "UDS / KWP  details:\n";
+                            result += string.Format("Service = {0} (0x{1}) \n\n", diagInfoList[activeTabIndex][rowIndex].services[0].sid.ToString(), ((int)(diagInfoList[activeTabIndex][rowIndex].services[0].sid)).ToString("X2"));
+
+                        }
+                    }
+                    result += "=========================================================================\n";
+                }
             }
             return result;
         }

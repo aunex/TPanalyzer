@@ -1,6 +1,6 @@
 ﻿namespace TPanalyzer
 {
-    partial class txtFileSelector
+    partial class TxtFileSelector
     {
         /// <summary>
         /// Required designer variable.
