@@ -1,8 +1,6 @@
 ﻿// To do LIST               
 
 // TODO: recent files
-// TODO: nacteni filtru ze souboru a refresh isotp a uds dat v tracu .... pravdepodobne bude nutne znovu spustit parsovani....
-// TODO: zadávání ID v hexa formátu
 
 
 using System;
@@ -510,7 +508,8 @@ namespace TPanalyzer
         private void newTrace(string tabName, int number)
         {
 
-            tabControlTraces.TabPages.Add(tabName, tabName, numOfTraces);
+            tabControlTraces.TabPages.Add(tabName, tabName + " [X]", numOfTraces);
+            ///TODO: Create a close routine for tabs
             tabControlTraces.SelectedIndex = numOfTraces;   // activate new tab imediatelly
             isoTpInfoList[number] = new List<IsoTpInformation>();
             diagInfoList[number] = new List<DiagFrameInformation>();
@@ -1064,7 +1063,7 @@ namespace TPanalyzer
 
                             if (tpInfo.frameType == IsoTpInformation.FrameType.First)
                             {
-                                strIsoTpDetails = "FF ";
+                                strIsoTpDetails = "FF";
                                 if (tpInfo.n_TA != -1)
                                 {
                                     strIsoTpDetails += string.Format(", N_AI = 0x{0}, N_TA = 0x{1}", tpInfo.n_AI.ToString("X4"), tpInfo.n_TA.ToString("X2"));
@@ -1075,7 +1074,7 @@ namespace TPanalyzer
                             }
                             else if (tpInfo.frameType == IsoTpInformation.FrameType.Single)
                             {
-                                strIsoTpDetails = "SF ";
+                                strIsoTpDetails = "SF";
                                 if (tpInfo.n_TA != -1)
                                 {
                                     strIsoTpDetails += string.Format(", N_AI = 0x{0}, N_TA = 0x{1}", tpInfo.n_AI.ToString("X4"), tpInfo.n_TA.ToString("X2"));

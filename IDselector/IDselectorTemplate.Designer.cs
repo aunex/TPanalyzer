@@ -42,16 +42,16 @@
             // tbNAI
             // 
             this.tbNAI.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbNAI.Location = new System.Drawing.Point(213, 3);
+            this.tbNAI.Location = new System.Drawing.Point(195, 3);
             this.tbNAI.Name = "tbNAI";
-            this.tbNAI.Size = new System.Drawing.Size(114, 20);
+            this.tbNAI.Size = new System.Drawing.Size(144, 20);
             this.tbNAI.TabIndex = 4;
             this.tbNAI.Leave += new System.EventHandler(this.tbNAI_Leave);
             // 
             // tbNTA
             // 
             this.tbNTA.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbNTA.Location = new System.Drawing.Point(333, 3);
+            this.tbNTA.Location = new System.Drawing.Point(345, 3);
             this.tbNTA.Name = "tbNTA";
             this.tbNTA.Size = new System.Drawing.Size(54, 20);
             this.tbNTA.TabIndex = 5;
@@ -62,12 +62,11 @@
             this.tableLayoutPanel1.ColumnCount = 7;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 18F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Controls.Add(this.cbMode, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnDelete, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.tbAlias, 5, 0);
@@ -114,9 +113,9 @@
             // tbAlias
             // 
             this.tbAlias.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbAlias.Location = new System.Drawing.Point(393, 3);
+            this.tbAlias.Location = new System.Drawing.Point(405, 3);
             this.tbAlias.Name = "tbAlias";
-            this.tbAlias.Size = new System.Drawing.Size(114, 20);
+            this.tbAlias.Size = new System.Drawing.Size(102, 20);
             this.tbAlias.TabIndex = 6;
             this.tbAlias.Leave += new System.EventHandler(this.tbAlias_Leave);
             // 
@@ -126,7 +125,7 @@
             this.cbExtendedID.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cbExtendedID.Location = new System.Drawing.Point(123, 3);
             this.cbExtendedID.Name = "cbExtendedID";
-            this.cbExtendedID.Size = new System.Drawing.Size(84, 24);
+            this.cbExtendedID.Size = new System.Drawing.Size(66, 24);
             this.cbExtendedID.TabIndex = 3;
             this.cbExtendedID.Text = "29b ID";
             this.cbExtendedID.UseVisualStyleBackColor = true;

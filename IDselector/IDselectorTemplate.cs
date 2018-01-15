@@ -62,7 +62,7 @@ namespace IDselector
 
             cbMode.SelectedIndex = (int)IDitem.adressingMode;
             cbExtendedID.Checked = IDitem.extendedID;
-            tbNAI.Text = IDitem.n_AI.ToString();
+            tbNAI.Text = string.Format("0x{0} ({1} d)", IDitem.n_AI.ToString("X4"), IDitem.n_AI.ToString());
             tbNTA.Text = IDitem.n_TA.ToString();
             tbAlias.Text = IDitem.alias;
             cbUdsKwp.SelectedIndex = (int)IDitem.udsKwpSelector;
@@ -94,7 +94,14 @@ namespace IDselector
 
         private void tbNAI_Leave(object sender, EventArgs e)
         {
-            Int32.TryParse(tbNAI.Text, out IDitem.n_AI);
+            if (tbNAI.Text.Substring(0, 2) != "0x")
+            {
+                Int32.TryParse(tbNAI.Text, out IDitem.n_AI);
+            }
+            else
+            {
+                IDitem.n_AI = (int)new System.ComponentModel.Int32Converter().ConvertFromString(tbNAI.Text);
+            }
             OnIDSelectorTemp_ItemChanged(e);
 
         }

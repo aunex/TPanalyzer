@@ -43,10 +43,10 @@ namespace TPanalyzer
             }
 
             // finally add the ADD button
-            Button onlyAddButton = new Button { Text = "+" };
-            flpSelectorRows.Controls.Add(onlyAddButton);
-            onlyAddButton.Click += new EventHandler(this.AddNewID);
-            this.Height = 130 + (35 * isoTpIdList.Count);
+//            Button onlyAddButton = new Button { Text = "+" };
+//            flpSelectorRows.Controls.Add(onlyAddButton);
+//            onlyAddButton.Click += new EventHandler(this.AddNewID);
+            this.Height = 105 + (36 * isoTpIdList.Count);
 
         }
 
@@ -143,6 +143,12 @@ namespace TPanalyzer
                     }
                 }
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            isoTpIdList.Add(new isoTPChannelConfig(0, 0, "Alias_" + (isoTpIdList.Count + 1).ToString(), 0, isoTPChannelConfig.AdressingMode.Normal, false));
+            loadListToTemplates();
         }
     }
 }

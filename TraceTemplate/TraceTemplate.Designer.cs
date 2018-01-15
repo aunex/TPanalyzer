@@ -29,16 +29,22 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.scHorizontal = new System.Windows.Forms.SplitContainer();
             this.scVerticalTop = new System.Windows.Forms.SplitContainer();
             this.dgvTraceTop = new System.Windows.Forms.DataGridView();
             this.rtbDetailsTop = new System.Windows.Forms.RichTextBox();
+            this.cMenuRTBoxTop = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.sellectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scVerticalBottom = new System.Windows.Forms.SplitContainer();
             this.dgvTraceBottom = new System.Windows.Forms.DataGridView();
             this.rtbDetailsBottom = new System.Windows.Forms.RichTextBox();
+            this.cMenuRTBoxBottom = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.cMenuIDHeader = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.hideColumnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showColumnsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,12 +62,7 @@
             this.filterSetupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resetAllFiltersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.cMenuRTBoxTop = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.sellectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cMenuRTBoxBottom = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.scHorizontal)).BeginInit();
             this.scHorizontal.Panel1.SuspendLayout();
             this.scHorizontal.Panel2.SuspendLayout();
@@ -71,14 +72,14 @@
             this.scVerticalTop.Panel2.SuspendLayout();
             this.scVerticalTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTraceTop)).BeginInit();
+            this.cMenuRTBoxTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.scVerticalBottom)).BeginInit();
             this.scVerticalBottom.Panel1.SuspendLayout();
             this.scVerticalBottom.Panel2.SuspendLayout();
             this.scVerticalBottom.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTraceBottom)).BeginInit();
-            this.cMenuIDHeader.SuspendLayout();
-            this.cMenuRTBoxTop.SuspendLayout();
             this.cMenuRTBoxBottom.SuspendLayout();
+            this.cMenuIDHeader.SuspendLayout();
             this.SuspendLayout();
             // 
             // scHorizontal
@@ -129,20 +130,21 @@
             // 
             this.dgvTraceTop.AllowUserToOrderColumns = true;
             this.dgvTraceTop.AllowUserToResizeRows = false;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.dgvTraceTop.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.dgvTraceTop.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvTraceTop.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvTraceTop.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvTraceTop.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvTraceTop.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvTraceTop.DefaultCellStyle = dataGridViewCellStyle8;
+            this.dgvTraceTop.ContextMenuStrip = this.cMenuIDHeader;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvTraceTop.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvTraceTop.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvTraceTop.Location = new System.Drawing.Point(0, 0);
             this.dgvTraceTop.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
@@ -171,6 +173,28 @@
             this.rtbDetailsTop.TabIndex = 0;
             this.rtbDetailsTop.Tag = "Top";
             this.rtbDetailsTop.Text = "";
+            // 
+            // cMenuRTBoxTop
+            // 
+            this.cMenuRTBoxTop.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.sellectAllToolStripMenuItem,
+            this.copyToolStripMenuItem});
+            this.cMenuRTBoxTop.Name = "cMenuRTBoxTop";
+            this.cMenuRTBoxTop.Size = new System.Drawing.Size(124, 48);
+            // 
+            // sellectAllToolStripMenuItem
+            // 
+            this.sellectAllToolStripMenuItem.Name = "sellectAllToolStripMenuItem";
+            this.sellectAllToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.sellectAllToolStripMenuItem.Text = "Sellect all";
+            this.sellectAllToolStripMenuItem.Click += new System.EventHandler(this.sellectAllToolStripMenuItem_Click);
+            // 
+            // copyToolStripMenuItem
+            // 
+            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.copyToolStripMenuItem.Text = "Copy";
+            this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
             // 
             // scVerticalBottom
             // 
@@ -202,14 +226,14 @@
             this.dgvTraceBottom.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvTraceBottom.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvTraceBottom.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvTraceBottom.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvTraceBottom.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvTraceBottom.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvTraceBottom.Location = new System.Drawing.Point(0, 0);
             this.dgvTraceBottom.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
@@ -239,6 +263,28 @@
             this.rtbDetailsBottom.Tag = "Bottom";
             this.rtbDetailsBottom.Text = "";
             // 
+            // cMenuRTBoxBottom
+            // 
+            this.cMenuRTBoxBottom.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.toolStripMenuItem2});
+            this.cMenuRTBoxBottom.Name = "cMenuRTBoxTop";
+            this.cMenuRTBoxBottom.Size = new System.Drawing.Size(124, 48);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(123, 22);
+            this.toolStripMenuItem1.Text = "Sellect all";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(123, 22);
+            this.toolStripMenuItem2.Text = "Copy";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
             // cMenuIDHeader
             // 
             this.cMenuIDHeader.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -247,9 +293,10 @@
             this.toolStripSeparator4,
             this.filterSetupToolStripMenuItem,
             this.resetAllFiltersToolStripMenuItem,
-            this.toolStripSeparator2});
+            this.toolStripSeparator2,
+            this.toolStripMenuItem3});
             this.cMenuIDHeader.Name = "cMenuIDHeader";
-            this.cMenuIDHeader.Size = new System.Drawing.Size(166, 104);
+            this.cMenuIDHeader.Size = new System.Drawing.Size(166, 126);
             // 
             // hideColumnToolStripMenuItem
             // 
@@ -367,49 +414,11 @@
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(162, 6);
             // 
-            // cMenuRTBoxTop
+            // toolStripMenuItem3
             // 
-            this.cMenuRTBoxTop.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.sellectAllToolStripMenuItem,
-            this.copyToolStripMenuItem});
-            this.cMenuRTBoxTop.Name = "cMenuRTBoxTop";
-            this.cMenuRTBoxTop.Size = new System.Drawing.Size(124, 48);
-            // 
-            // sellectAllToolStripMenuItem
-            // 
-            this.sellectAllToolStripMenuItem.Name = "sellectAllToolStripMenuItem";
-            this.sellectAllToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
-            this.sellectAllToolStripMenuItem.Text = "Sellect all";
-            this.sellectAllToolStripMenuItem.Click += new System.EventHandler(this.sellectAllToolStripMenuItem_Click);
-            // 
-            // copyToolStripMenuItem
-            // 
-            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
-            this.copyToolStripMenuItem.Text = "Copy";
-            this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
-            // 
-            // cMenuRTBoxBottom
-            // 
-            this.cMenuRTBoxBottom.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1,
-            this.toolStripMenuItem2});
-            this.cMenuRTBoxBottom.Name = "cMenuRTBoxTop";
-            this.cMenuRTBoxBottom.Size = new System.Drawing.Size(124, 48);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
-            this.toolStripMenuItem1.Text = "Sellect all";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
-            this.toolStripMenuItem2.Text = "Copy";
-            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(165, 22);
+            this.toolStripMenuItem3.Text = "Close trace";
             // 
             // TraceTemplate
             // 
@@ -428,14 +437,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.scVerticalTop)).EndInit();
             this.scVerticalTop.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvTraceTop)).EndInit();
+            this.cMenuRTBoxTop.ResumeLayout(false);
             this.scVerticalBottom.Panel1.ResumeLayout(false);
             this.scVerticalBottom.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.scVerticalBottom)).EndInit();
             this.scVerticalBottom.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvTraceBottom)).EndInit();
-            this.cMenuIDHeader.ResumeLayout(false);
-            this.cMenuRTBoxTop.ResumeLayout(false);
             this.cMenuRTBoxBottom.ResumeLayout(false);
+            this.cMenuIDHeader.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -472,5 +481,6 @@
         private System.Windows.Forms.ContextMenuStrip cMenuRTBoxBottom;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
     }
 }

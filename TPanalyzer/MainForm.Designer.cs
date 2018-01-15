@@ -53,7 +53,6 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tabControlTraces = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.traceTemplate1 = new traceTemplate.TraceTemplate();
             this.openDialogTrace = new System.Windows.Forms.OpenFileDialog();
             this.cMenuIDHeader = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.hideColumnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,14 +60,14 @@
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.filterSetupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.doubleAnalyzerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cMenuTab = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.closeTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.traceTemplate1 = new traceTemplate.TraceTemplate();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.closeTraceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.topMenuStrip.SuspendLayout();
             this.toolStripBottom.SuspendLayout();
             this.tabControlTraces.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.cMenuIDHeader.SuspendLayout();
-            this.cMenuTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // topMenuStrip
@@ -253,7 +252,6 @@
             // tabControlTraces
             // 
             this.tabControlTraces.Alignment = System.Windows.Forms.TabAlignment.Bottom;
-            this.tabControlTraces.ContextMenuStrip = this.cMenuTab;
             this.tabControlTraces.Controls.Add(this.tabPage1);
             this.tabControlTraces.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControlTraces.Location = new System.Drawing.Point(0, 24);
@@ -274,20 +272,6 @@
             this.tabPage1.Text = "Trace 1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // traceTemplate1
-            // 
-            this.traceTemplate1.DataMemberBottom = "";
-            this.traceTemplate1.DataMemberTop = "";
-            this.traceTemplate1.DataSourceBottom = null;
-            this.traceTemplate1.DataSourceTop = null;
-            this.traceTemplate1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.traceTemplate1.Location = new System.Drawing.Point(3, 3);
-            this.traceTemplate1.Name = "traceTemplate1";
-            this.traceTemplate1.rtbDetailsBottomText = "";
-            this.traceTemplate1.rtbDetailsTopText = "";
-            this.traceTemplate1.Size = new System.Drawing.Size(1273, 569);
-            this.traceTemplate1.TabIndex = 0;
-            // 
             // openDialogTrace
             // 
             this.openDialogTrace.RestoreDirectory = true;
@@ -299,9 +283,11 @@
             this.showColumnsToolStripMenuItem,
             this.toolStripSeparator4,
             this.filterSetupToolStripMenuItem,
-            this.doubleAnalyzerToolStripMenuItem});
+            this.doubleAnalyzerToolStripMenuItem,
+            this.toolStripSeparator5,
+            this.closeTraceToolStripMenuItem});
             this.cMenuIDHeader.Name = "cMenuIDHeader";
-            this.cMenuIDHeader.Size = new System.Drawing.Size(166, 98);
+            this.cMenuIDHeader.Size = new System.Drawing.Size(166, 126);
             // 
             // hideColumnToolStripMenuItem
             // 
@@ -333,19 +319,31 @@
             this.doubleAnalyzerToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.doubleAnalyzerToolStripMenuItem.Text = "Double analyzer";
             // 
-            // cMenuTab
+            // traceTemplate1
             // 
-            this.cMenuTab.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.closeTabToolStripMenuItem});
-            this.cMenuTab.Name = "cMenuTab";
-            this.cMenuTab.Size = new System.Drawing.Size(124, 26);
+            this.traceTemplate1.ContextMenuStrip = this.cMenuIDHeader;
+            this.traceTemplate1.DataMemberBottom = "";
+            this.traceTemplate1.DataMemberTop = "";
+            this.traceTemplate1.DataSourceBottom = null;
+            this.traceTemplate1.DataSourceTop = null;
+            this.traceTemplate1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.traceTemplate1.Location = new System.Drawing.Point(3, 3);
+            this.traceTemplate1.Name = "traceTemplate1";
+            this.traceTemplate1.rtbDetailsBottomText = "";
+            this.traceTemplate1.rtbDetailsTopText = "";
+            this.traceTemplate1.Size = new System.Drawing.Size(1273, 569);
+            this.traceTemplate1.TabIndex = 0;
             // 
-            // closeTabToolStripMenuItem
+            // toolStripSeparator5
             // 
-            this.closeTabToolStripMenuItem.Name = "closeTabToolStripMenuItem";
-            this.closeTabToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.closeTabToolStripMenuItem.Text = "Close tab";
-            this.closeTabToolStripMenuItem.Click += new System.EventHandler(this.closeTabToolStripMenuItem_Click);
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(162, 6);
+            // 
+            // closeTraceToolStripMenuItem
+            // 
+            this.closeTraceToolStripMenuItem.Name = "closeTraceToolStripMenuItem";
+            this.closeTraceToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.closeTraceToolStripMenuItem.Text = "Close trace";
             // 
             // analyzerMainForm
             // 
@@ -365,7 +363,6 @@
             this.tabControlTraces.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.cMenuIDHeader.ResumeLayout(false);
-            this.cMenuTab.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -404,8 +401,8 @@
         private System.Windows.Forms.ToolStripMenuItem autoResizeTraceCollumnsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem iDListToolStripMenuItem;
-        private System.Windows.Forms.ContextMenuStrip cMenuTab;
-        private System.Windows.Forms.ToolStripMenuItem closeTabToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripMenuItem closeTraceToolStripMenuItem;
     }
 }
 
