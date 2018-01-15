@@ -469,18 +469,18 @@ namespace traceTemplate
 
         private void dgvTraceTop_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-            if (dgvTraceTop.RowCount > 0 && dgvTraceTop.ColumnCount > 9)
-            {
-                dgvTraceTop.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;     // last empty collumn use as place holder and filler
-            }
+            //if (dgvTraceTop.RowCount > 0 && dgvTraceTop.ColumnCount > 9)
+            //{
+            //    dgvTraceTop.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;     // last empty collumn use as place holder and filler
+           // }
         }
 
         private void dgvTraceBottom_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-            if (dgvTraceBottom.RowCount > 0 && dgvTraceBottom.ColumnCount > 9)
-            {
-                dgvTraceBottom.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;      // last empty collumn use as place holder and filler
-            }
+            //if (dgvTraceBottom.RowCount > 0 && dgvTraceBottom.ColumnCount > 9)
+           // {
+           //     dgvTraceBottom.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;      // last empty collumn use as place holder and filler
+           // }
         }
 
         private void dgvTraceTop_MouseClick(object sender, MouseEventArgs e)

@@ -1064,13 +1064,23 @@ namespace TPanalyzer
 
                             if (tpInfo.frameType == IsoTpInformation.FrameType.First)
                             {
-                                strIsoTpDetails = string.Format("FF, DL = {0}", tpInfo.higherLayerDataLength.ToString());
+                                strIsoTpDetails = "FF ";
+                                if (tpInfo.n_TA != -1)
+                                {
+                                    strIsoTpDetails += string.Format(", N_AI = 0x{0}, N_TA = 0x{1}", tpInfo.n_AI.ToString("X4"), tpInfo.n_TA.ToString("X2"));
+                                }
+                                strIsoTpDetails += string.Format(", DL = {0}", tpInfo.higherLayerDataLength.ToString());
                                 strUdsKwp = strInterface.strData.Substring((tpInfo.byteCount * 5), (5 * (8 - tpInfo.byteCount)) - 2);
                                 diagInfoList[activeTabIndex].Add(null);
                             }
                             else if (tpInfo.frameType == IsoTpInformation.FrameType.Single)
                             {
-                                strIsoTpDetails = string.Format("SF, DL = {0}", tpInfo.higherLayerDataLength.ToString());
+                                strIsoTpDetails = "SF ";
+                                if (tpInfo.n_TA != -1)
+                                {
+                                    strIsoTpDetails += string.Format(", N_AI = 0x{0}, N_TA = 0x{1}", tpInfo.n_AI.ToString("X4"), tpInfo.n_TA.ToString("X2"));
+                                }
+                                strIsoTpDetails += string.Format(", DL = {0}", tpInfo.higherLayerDataLength.ToString());
                                 strUdsKwp = strInterface.strData.Substring((tpInfo.byteCount * 5), (5 * (tpInfo.higherLayerDataLength)) - 2);
                                 diagFrameInfo = parseDiagData(tpInfo.higherLayerData);
                                 diagInfoList[activeTabIndex].Add(diagFrameInfo);
@@ -1163,100 +1173,133 @@ namespace TPanalyzer
             IsoTpInformation result = new IsoTpInformation();
 
             result.n_AI = canID;
-            result.frameType = (IsoTpInformation.FrameType)((dataToParse[0] & 0xF0) >> 4);
-            switch (result.frameType)
+            if (extendedAdresing)
             {
-                case IsoTpInformation.FrameType.Single: // single frame - 1B of isotp information = high nibble frame type information and low nibble data count
-                    {
-                        if (extendedAdresing)
+                result.n_TA = dataToParse[0];
+                result.frameType = (IsoTpInformation.FrameType)((dataToParse[1] & 0xF0) >> 4);
+                switch (result.frameType)
+                {
+                    case IsoTpInformation.FrameType.Single: // single frame - 1B of isotp information = high nibble frame type information and low nibble data count
                         {
-                            result.n_TA = (int)dataToParse[0];
                             result.byteCount = 2;
+                            result.higherLayerDataLength = (dataToParse[1] & 0x0F);    // low half of first byte
+                            result.higherLayerData = new byte[result.higherLayerDataLength];
+                            for (int i = 0; i < result.higherLayerDataLength; i++)
+                            {
+                                result.higherLayerData[i] = dataToParse[i + result.byteCount];
+                            }
+                            break;
                         }
-                        else
+                    case IsoTpInformation.FrameType.First: // first frame - 3B of isotp information = 
                         {
-                            result.byteCount = 1;
-                        }
-                        result.higherLayerDataLength = (dataToParse[0] & 0x0F);    // low half of first byte
-                        result.higherLayerData = new byte[result.higherLayerDataLength];
-                        for (int i = 0; i < result.higherLayerDataLength; i++)
-                        {
-                            result.higherLayerData[i] = dataToParse[i + result.byteCount];
-                        }
-                        break;
-                    }
-                case IsoTpInformation.FrameType.First: // first frame - 3B of isotp information = 
-                    {
-                        if (extendedAdresing)
-                        {
-                            result.n_TA = (int)dataToParse[0];
                             result.byteCount = 3;
+                            result.higherLayerDataLength = dataToParse[2] + (256 * (dataToParse[1] & 0x0F));
+                            byte[] tempArray = new byte[6];
+                            for (int i = 0; i < (8 - result.byteCount); i++)
+                            {
+                                tempArray[i] = dataToParse[i + result.byteCount];
+                            }
+                            myIsoTpBuffer.AddDataToBuffer(canID, 0, result.higherLayerDataLength, tempArray);
+                            result.higherLayerData = null;
+                            break;
                         }
-                        else
+                    case IsoTpInformation.FrameType.Consecutive: // consecutive frame - 1B of isotp information = 
                         {
                             result.byteCount = 2;
+                            byte[] tempArray = new byte[7];
+                            for (int i = 0; i < (8 - result.byteCount); i++)
+                            {
+                                tempArray[i] = dataToParse[i + result.byteCount];
+                            }
+                            int tempResult = (myIsoTpBuffer.AddDataToBuffer(canID, 0, 0, tempArray));
+                            if (tempResult == 3)        // means that frame is already finished
+                            {
+                                result = myIsoTpBuffer.getFinishedFrame(canID, 0, true); // get the whole frame data for higher layer and delete the temporary data from buffer
+                            }
+                            result.n_AI = canID;
+                            result.frameType = IsoTpInformation.FrameType.Consecutive;
+                            result.byteCount = 1;
+                            result.consIndex = (dataToParse[0] & 0x0F);
+                            break;
                         }
-                        result.higherLayerDataLength = dataToParse[1] + (256 * (dataToParse[0] & 0x0F));
-                        byte[] tempArray = new byte[6];
-                        for (int i = 0; i < (8 - result.byteCount); i++)
+                    case IsoTpInformation.FrameType.Flowcontrol: // flowcontrol frame - 3B of isotp information = 
                         {
-                            tempArray[i] = dataToParse[i + result.byteCount];
+                            result.byteCount = 4;
+                            result.fcFlag = (IsoTpInformation.FcFlag)(dataToParse[0] & 0x0F);
+                            result.blockSize = dataToParse[1];
+                            result.separationTime = dataToParse[2];
+                            break;
                         }
-                        myIsoTpBuffer.AddDataToBuffer(canID, 0, result.higherLayerDataLength, tempArray);
-                        result.higherLayerData = null;
-                        break;
-                    }
-                case IsoTpInformation.FrameType.Consecutive: // consecutive frame - 1B of isotp information = 
-                    {
-                        if (extendedAdresing)
+                    default:
                         {
-                            result.n_TA = (int)dataToParse[0];
-                            result.byteCount = 2;
+                            result.frameType = IsoTpInformation.FrameType.None;
+                            break;
                         }
-                        else
+                }
+            }
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            else
+            {
+                result.frameType = (IsoTpInformation.FrameType)((dataToParse[0] & 0xF0) >> 4);
+                switch (result.frameType)
+                {
+                    case IsoTpInformation.FrameType.Single: // single frame - 1B of isotp information = high nibble frame type information and low nibble data count
                         {
                             result.byteCount = 1;
+                            result.higherLayerDataLength = (dataToParse[0] & 0x0F);    // low half of first byte
+                            result.higherLayerData = new byte[result.higherLayerDataLength];
+                            for (int i = 0; i < result.higherLayerDataLength; i++)
+                            {
+                                result.higherLayerData[i] = dataToParse[i + result.byteCount];
+                            }
+                            break;
                         }
-                        byte[] tempArray = new byte[7];
-                        for (int i = 0; i < (8 - result.byteCount); i++)
+                    case IsoTpInformation.FrameType.First: // first frame - 3B of isotp information = 
                         {
-                            tempArray[i] = dataToParse[i + result.byteCount];
+                            result.byteCount = 2;
+                            result.higherLayerDataLength = dataToParse[1] + (256 * (dataToParse[0] & 0x0F));
+                            byte[] tempArray = new byte[6];
+                            for (int i = 0; i < (8 - result.byteCount); i++)
+                            {
+                                tempArray[i] = dataToParse[i + result.byteCount];
+                            }
+                            myIsoTpBuffer.AddDataToBuffer(canID, 0, result.higherLayerDataLength, tempArray);
+                            result.higherLayerData = null;
+                            break;
                         }
-                        int tempResult = (myIsoTpBuffer.AddDataToBuffer(canID, 0, 0, tempArray));
-                        if (tempResult == 3)        // means that frame is already finished
+                    case IsoTpInformation.FrameType.Consecutive: // consecutive frame - 1B of isotp information = 
                         {
-                            result = myIsoTpBuffer.getFinishedFrame(canID, 0, true); // get the whole frame data for higher layer and delete the temporary data from buffer
+                            result.byteCount = 1;
+                            byte[] tempArray = new byte[7];
+                            for (int i = 0; i < (8 - result.byteCount); i++)
+                            {
+                                tempArray[i] = dataToParse[i + result.byteCount];
+                            }
+                            int tempResult = (myIsoTpBuffer.AddDataToBuffer(canID, 0, 0, tempArray));
+                            if (tempResult == 3)        // means that frame is already finished
+                            {
+                                result = myIsoTpBuffer.getFinishedFrame(canID, 0, true); // get the whole frame data for higher layer and delete the temporary data from buffer
+                            }
+                            result.n_AI = canID;
+                            result.frameType = IsoTpInformation.FrameType.Consecutive;
+                            result.byteCount = 1;
+                            result.consIndex = (dataToParse[0] & 0x0F);
+                            break;
                         }
-                        result.n_AI = canID;
-                        result.frameType = IsoTpInformation.FrameType.Consecutive;
-                        result.byteCount = 1;
-                        result.consIndex = (dataToParse[0] & 0x0F);
-                        break;
-                    }
-                case IsoTpInformation.FrameType.Flowcontrol: // flowcontrol frame - 3B of isotp information = 
-                    {
-                        if (extendedAdresing)
-                        {
-                            result.n_TA = (int)dataToParse[0];
-                            result.byteCount = 4;
-                            result.fcFlag = (IsoTpInformation.FcFlag)(dataToParse[1] & 0x0F);
-                            result.blockSize = dataToParse[2];
-                            result.separationTime = dataToParse[3];
-                        }
-                        else
+                    case IsoTpInformation.FrameType.Flowcontrol: // flowcontrol frame - 3B of isotp information = 
                         {
                             result.byteCount = 3;
                             result.fcFlag = (IsoTpInformation.FcFlag)(dataToParse[0] & 0x0F);
                             result.blockSize = dataToParse[1];
                             result.separationTime = dataToParse[2];
+                            break;
                         }
-                        break;
-                    }
-                default:
-                    {
-                        result.frameType = IsoTpInformation.FrameType.None;
-                        break;
-                    }
+                    default:
+                        {
+                            result.frameType = IsoTpInformation.FrameType.None;
+                            break;
+                        }
+                }
             }
             return result;
         }
@@ -1693,7 +1736,7 @@ namespace TPanalyzer
         {
             string result = "";
 
-            if ((rowSelected.Count == 1) && (traceTemplates[activeTabIndex] != null))    // Single line detail
+            if ((rowSelected.Count <= 4) && (traceTemplates[activeTabIndex] != null))    // Single line detail
             {
                 foreach (DataGridViewRow row in rowSelected)
                 {
@@ -1706,7 +1749,7 @@ namespace TPanalyzer
                             result += "Selected row = " + rowIndex.ToString() + "\n";
                             result += "Timestamp = " + dtTracesA[activeTabIndex].Rows[rowIndex].Field<float>(0).ToString() + "\n";
                             result += "Type of record = " + dtTracesA[activeTabIndex].Rows[rowIndex].Field<string>(1) + "\n";
-                            result += "Identifier = " + dtTracesA[activeTabIndex].Rows[rowIndex].Field<string>(3) + "\n";
+                            result += "Identifier = 0x" + dtTracesA[activeTabIndex].Rows[rowIndex].Field<string>(3) + "\n";
                             result += "CAN message data = " + dtTracesA[activeTabIndex].Rows[rowIndex].Field<string>(7) + "\n\n";
 
                             if ((row != null) && (rowIndex > 0) && (rowIndex < isoTpInfoList[activeTabIndex].Count))
@@ -1714,10 +1757,10 @@ namespace TPanalyzer
                                 if (isoTpInfoList[activeTabIndex][rowIndex] != null)
                                 {
                                     result += "ISO-TP details:\n";
-                                    result += "Network address information  (n_AI): " + isoTpInfoList[activeTabIndex][rowIndex].n_AI + "\n";
+                                    result += string.Format("Network address information  (n_AI): 0x{0} \n", isoTpInfoList[activeTabIndex][rowIndex].n_AI.ToString("X4"));
                                     if (isoTpInfoList[activeTabIndex][rowIndex].n_TA != -1)
                                     {
-                                        result += "Network target address (n_TA): " + isoTpInfoList[activeTabIndex][rowIndex].n_TA + "\n";
+                                        result += "Network target address (n_TA): 0x" + isoTpInfoList[activeTabIndex][rowIndex].n_TA + "\n";
                                     }
                                     result += "N_PDU type : " + isoTpInfoList[activeTabIndex][rowIndex].frameType.ToString() + "\n";
                                     if (isoTpInfoList[activeTabIndex][rowIndex].frameType == IsoTpInformation.FrameType.First)
@@ -1761,83 +1804,6 @@ namespace TPanalyzer
                                     if (diagInfoList[activeTabIndex][rowIndex].services[0].did != -1)
                                     {
                                         result += string.Format("DID = 0x{0} \n", diagInfoList[activeTabIndex][rowIndex].services[0].did.ToString("X4"));
-                                    }
-                                    result += "\n";
-                                }
-                            }
-                            result += "=========================================================================\n";
-                        }
-                    }
-                }
-            }
-            else if (rowSelected.Count == 2)     // double line detail
-            {
-                foreach (DataGridViewRow row in rowSelected)
-                {
-                    int rowIndex = row.Index;
-                    if (rowIndex < dtTracesA[activeTabIndex].Rows.Count)
-                    {
-                        if (dtTracesA[activeTabIndex].Rows[rowIndex] != null)
-                        {
-                            result += "Details for single selected message:\n\n";
-                            result += "Selected row = " + rowIndex.ToString() + "\n";
-                            result += "Timestamp = " + dtTracesA[activeTabIndex].Rows[rowIndex].Field<float>(0).ToString() + "\n";
-                            result += "Type of record = " + dtTracesA[activeTabIndex].Rows[rowIndex].Field<string>(1) + "\n";
-                            result += "Identifier = " + dtTracesA[activeTabIndex].Rows[rowIndex].Field<string>(3) + "\n";
-                            result += "CAN message data = " + dtTracesA[activeTabIndex].Rows[rowIndex].Field<string>(7) + "\n\n";
-
-                            if ((row != null) && (rowIndex > 0) && (rowIndex < isoTpInfoList[activeTabIndex].Count))
-                            {
-                                if (isoTpInfoList[activeTabIndex][rowIndex] != null)
-                                {
-                                    result += "ISO-TP details:\n";
-                                    result += "Network address information  (n_AI): " + isoTpInfoList[activeTabIndex][rowIndex].n_AI + "\n";
-                                    if (isoTpInfoList[activeTabIndex][rowIndex].n_TA != -1)
-                                    {
-                                        result += "Network target address (n_TA): " + isoTpInfoList[activeTabIndex][rowIndex].n_TA + "\n";
-                                    }
-                                    result += "N_PDU type : " + isoTpInfoList[activeTabIndex][rowIndex].frameType.ToString() + "\n";
-                                    if (isoTpInfoList[activeTabIndex][rowIndex].frameType == IsoTpInformation.FrameType.First)
-                                    {
-                                        result += "Higher layer data length: " + isoTpInfoList[activeTabIndex][rowIndex].higherLayerDataLength.ToString() + "\n\n";
-                                        result += "WholeFrameDataCount: " + isoTpInfoList[activeTabIndex][rowIndex].higherLayerDataLength.ToString() + "\n";
-                                    }
-
-                                    if (isoTpInfoList[activeTabIndex][rowIndex].frameType == IsoTpInformation.FrameType.Single)
-                                    {
-                                        result += "Higher layer data length: " + isoTpInfoList[activeTabIndex][rowIndex].higherLayerDataLength.ToString() + "\n\n";
-                                    }
-
-                                    if (isoTpInfoList[activeTabIndex][rowIndex].frameType == IsoTpInformation.FrameType.Consecutive)
-                                    {
-                                        result += "Consecutive frame index: " + isoTpInfoList[activeTabIndex][rowIndex].consIndex.ToString() + "\n";
-                                        if (isoTpInfoList[activeTabIndex][rowIndex].higherLayerData != null)
-                                        {
-                                            result += "Higher layer data:\n" + BitConverter.ToString(isoTpInfoList[activeTabIndex][rowIndex].higherLayerData).Replace("-", "  ") + "\n\n";
-                                        }
-                                    }
-
-                                    if (isoTpInfoList[activeTabIndex][rowIndex].frameType == IsoTpInformation.FrameType.Flowcontrol)
-                                    {
-                                        result += "Flow control flag: " + isoTpInfoList[activeTabIndex][rowIndex].fcFlag + "\n";
-                                        result += "Separation time: " + isoTpInfoList[activeTabIndex][rowIndex].separationTime.ToString() + "\n";
-                                        result += "Block size: " + isoTpInfoList[activeTabIndex][rowIndex].blockSize.ToString() + "\n";
-                                        result += "Higher layer data length: " + isoTpInfoList[activeTabIndex][rowIndex].higherLayerDataLength.ToString() + "\n\n";
-                                    }
-                                    else
-                                    {// for all frametypes except flowcontrol add the data to the end of details
-
-                                    }
-
-                                }
-
-                                if (diagInfoList[activeTabIndex][rowIndex] != null)
-                                {
-                                    result += "UDS / KWP  details:\n";
-                                    result += string.Format("Service = {0} (0x{1}) \n", diagInfoList[activeTabIndex][rowIndex].services[0].sid.ToString(), ((int)(diagInfoList[activeTabIndex][rowIndex].services[0].sid)).ToString("X2"));
-                                    if (diagInfoList[activeTabIndex][rowIndex].services[0].did != -1)
-                                    {
-                                        result += string.Format("DID = 0x{0}) \n", diagInfoList[activeTabIndex][rowIndex].services[0].did.ToString("X4"));
                                     }
                                     result += "\n";
                                 }
