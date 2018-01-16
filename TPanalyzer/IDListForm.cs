@@ -34,20 +34,17 @@ namespace TPanalyzer
 
             foreach (isoTPChannelConfig oneConfig in isoTpIdList)
             {
-                IDselectorTemplate newSelectorRow = new IDselectorTemplate(oneConfig);  // add the row with IDselector for every ID in the list
+                IDselectorTemplate newSelectorRow = new IDselectorTemplate(oneConfig, isoTpIdList.IndexOf(oneConfig));  // add the row with IDselector for every ID in the list
                 newSelectorRow.Tag = isoTpIdList.IndexOf(oneConfig);
                 flpSelectorRows.Controls.Add(newSelectorRow);
                 this.Width = newSelectorRow.Width + 25;
                 newSelectorRow.IDSelectorTemp_DeleteItem += new EventHandler(this.OneIDSelectorTemp_DeleteItem);
                 newSelectorRow.IDSelectorTemp_ItemChanged += new EventHandler(this.OneIDSelectorTemp_ItemChnaged);
             }
-
-            // finally add the ADD button
-//            Button onlyAddButton = new Button { Text = "+" };
-//            flpSelectorRows.Controls.Add(onlyAddButton);
-//            onlyAddButton.Click += new EventHandler(this.AddNewID);
-            this.Height = 105 + (36 * isoTpIdList.Count);
-
+            if (this.Height < (105 + (36 * isoTpIdList.Count)))
+            {
+                this.Height = 105 + (36 * isoTpIdList.Count);
+            }
         }
 
         private void AddNewID(object sender, EventArgs e)
@@ -149,6 +146,16 @@ namespace TPanalyzer
         {
             isoTpIdList.Add(new isoTPChannelConfig(0, 0, "Alias_" + (isoTpIdList.Count + 1).ToString(), 0, isoTPChannelConfig.AdressingMode.Normal, false));
             loadListToTemplates();
+        }
+
+        private void IDListForm_Resize(object sender, EventArgs e)
+        {
+            this.Width = 624;
+        }
+
+        private void IDListForm_ResizeBegin(object sender, EventArgs e)
+        {
+            this.Width = 624;
         }
     }
 }

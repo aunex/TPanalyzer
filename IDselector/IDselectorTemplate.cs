@@ -55,7 +55,7 @@ namespace IDselector
             }
         }
 
-        public IDselectorTemplate(isoTPChannelConfig itemConfig)
+        public IDselectorTemplate(isoTPChannelConfig itemConfig, int index)
         {
             InitializeComponent();
             IDitem = itemConfig;
@@ -66,6 +66,15 @@ namespace IDselector
             tbNTA.Text = IDitem.n_TA.ToString();
             tbAlias.Text = IDitem.alias;
             cbUdsKwp.SelectedIndex = (int)IDitem.udsKwpSelector;
+            if (index % 2 != 0)
+            {
+                tableLayoutPanel1.BackColor = Color.Gray;
+                cbMode.BackColor = Color.LightGray;
+                tbNAI.BackColor = Color.LightGray;
+                tbNTA.BackColor = Color.LightGray;
+                tbAlias.BackColor = Color.LightGray;
+                cbUdsKwp.BackColor = Color.LightGray;
+            }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)

@@ -35,16 +35,6 @@
             this.scHorizontal = new System.Windows.Forms.SplitContainer();
             this.scVerticalTop = new System.Windows.Forms.SplitContainer();
             this.dgvTraceTop = new System.Windows.Forms.DataGridView();
-            this.rtbDetailsTop = new System.Windows.Forms.RichTextBox();
-            this.cMenuRTBoxTop = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.sellectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.scVerticalBottom = new System.Windows.Forms.SplitContainer();
-            this.dgvTraceBottom = new System.Windows.Forms.DataGridView();
-            this.rtbDetailsBottom = new System.Windows.Forms.RichTextBox();
-            this.cMenuRTBoxBottom = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.cMenuIDHeader = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.hideColumnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showColumnsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,6 +53,16 @@
             this.resetAllFiltersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.rtbDetailsTop = new System.Windows.Forms.RichTextBox();
+            this.cMenuRTBoxTop = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.sellectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.scVerticalBottom = new System.Windows.Forms.SplitContainer();
+            this.dgvTraceBottom = new System.Windows.Forms.DataGridView();
+            this.rtbDetailsBottom = new System.Windows.Forms.RichTextBox();
+            this.cMenuRTBoxBottom = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.scHorizontal)).BeginInit();
             this.scHorizontal.Panel1.SuspendLayout();
             this.scHorizontal.Panel2.SuspendLayout();
@@ -72,6 +72,7 @@
             this.scVerticalTop.Panel2.SuspendLayout();
             this.scVerticalTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTraceTop)).BeginInit();
+            this.cMenuIDHeader.SuspendLayout();
             this.cMenuRTBoxTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.scVerticalBottom)).BeginInit();
             this.scVerticalBottom.Panel1.SuspendLayout();
@@ -79,7 +80,6 @@
             this.scVerticalBottom.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTraceBottom)).BeginInit();
             this.cMenuRTBoxBottom.SuspendLayout();
-            this.cMenuIDHeader.SuspendLayout();
             this.SuspendLayout();
             // 
             // scHorizontal
@@ -155,135 +155,11 @@
             this.dgvTraceTop.Size = new System.Drawing.Size(560, 300);
             this.dgvTraceTop.TabIndex = 0;
             this.dgvTraceTop.Tag = "Top";
+            this.dgvTraceTop.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvTraceTop_CellFormatting);
             this.dgvTraceTop.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTraceTop_CellMouseEnter);
             this.dgvTraceTop.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvTraceTop_DataBindingComplete);
             this.dgvTraceTop.SelectionChanged += new System.EventHandler(this.dgvTraceTop_SelectionChanged);
             this.dgvTraceTop.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvTraceTop_MouseClick);
-            // 
-            // rtbDetailsTop
-            // 
-            this.rtbDetailsTop.AutoWordSelection = true;
-            this.rtbDetailsTop.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.rtbDetailsTop.ContextMenuStrip = this.cMenuRTBoxTop;
-            this.rtbDetailsTop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtbDetailsTop.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.rtbDetailsTop.Location = new System.Drawing.Point(0, 0);
-            this.rtbDetailsTop.Name = "rtbDetailsTop";
-            this.rtbDetailsTop.Size = new System.Drawing.Size(237, 300);
-            this.rtbDetailsTop.TabIndex = 0;
-            this.rtbDetailsTop.Tag = "Top";
-            this.rtbDetailsTop.Text = "";
-            // 
-            // cMenuRTBoxTop
-            // 
-            this.cMenuRTBoxTop.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.sellectAllToolStripMenuItem,
-            this.copyToolStripMenuItem});
-            this.cMenuRTBoxTop.Name = "cMenuRTBoxTop";
-            this.cMenuRTBoxTop.Size = new System.Drawing.Size(124, 48);
-            // 
-            // sellectAllToolStripMenuItem
-            // 
-            this.sellectAllToolStripMenuItem.Name = "sellectAllToolStripMenuItem";
-            this.sellectAllToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
-            this.sellectAllToolStripMenuItem.Text = "Sellect all";
-            this.sellectAllToolStripMenuItem.Click += new System.EventHandler(this.sellectAllToolStripMenuItem_Click);
-            // 
-            // copyToolStripMenuItem
-            // 
-            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
-            this.copyToolStripMenuItem.Text = "Copy";
-            this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
-            // 
-            // scVerticalBottom
-            // 
-            this.scVerticalBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.scVerticalBottom.Location = new System.Drawing.Point(0, 0);
-            this.scVerticalBottom.Name = "scVerticalBottom";
-            // 
-            // scVerticalBottom.Panel1
-            // 
-            this.scVerticalBottom.Panel1.Controls.Add(this.dgvTraceBottom);
-            this.scVerticalBottom.Panel1MinSize = 200;
-            // 
-            // scVerticalBottom.Panel2
-            // 
-            this.scVerticalBottom.Panel2.Controls.Add(this.rtbDetailsBottom);
-            this.scVerticalBottom.Panel2MinSize = 200;
-            this.scVerticalBottom.Size = new System.Drawing.Size(800, 297);
-            this.scVerticalBottom.SplitterDistance = 560;
-            this.scVerticalBottom.SplitterWidth = 3;
-            this.scVerticalBottom.TabIndex = 0;
-            this.scVerticalBottom.SplitterMoving += new System.Windows.Forms.SplitterCancelEventHandler(this.scVerticalBottom_SplitterMoving);
-            this.scVerticalBottom.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.scVerticalBottom_SplitterMoved);
-            // 
-            // dgvTraceBottom
-            // 
-            this.dgvTraceBottom.AllowUserToOrderColumns = true;
-            this.dgvTraceBottom.AllowUserToResizeRows = false;
-            this.dgvTraceBottom.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dgvTraceBottom.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvTraceBottom.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.dgvTraceBottom.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvTraceBottom.DefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvTraceBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvTraceBottom.Location = new System.Drawing.Point(0, 0);
-            this.dgvTraceBottom.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
-            this.dgvTraceBottom.Name = "dgvTraceBottom";
-            this.dgvTraceBottom.ReadOnly = true;
-            this.dgvTraceBottom.RowHeadersVisible = false;
-            this.dgvTraceBottom.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvTraceBottom.Size = new System.Drawing.Size(560, 297);
-            this.dgvTraceBottom.TabIndex = 1;
-            this.dgvTraceBottom.Tag = "Bottom";
-            this.dgvTraceBottom.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTraceBottom_CellMouseEnter);
-            this.dgvTraceBottom.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvTraceBottom_DataBindingComplete);
-            this.dgvTraceBottom.SelectionChanged += new System.EventHandler(this.dgvTraceBottom_SelectionChanged);
-            this.dgvTraceBottom.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvTraceBottom_MouseClick);
-            // 
-            // rtbDetailsBottom
-            // 
-            this.rtbDetailsBottom.AutoWordSelection = true;
-            this.rtbDetailsBottom.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.rtbDetailsBottom.ContextMenuStrip = this.cMenuRTBoxBottom;
-            this.rtbDetailsBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtbDetailsBottom.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.rtbDetailsBottom.Location = new System.Drawing.Point(0, 0);
-            this.rtbDetailsBottom.Name = "rtbDetailsBottom";
-            this.rtbDetailsBottom.Size = new System.Drawing.Size(237, 297);
-            this.rtbDetailsBottom.TabIndex = 1;
-            this.rtbDetailsBottom.Tag = "Bottom";
-            this.rtbDetailsBottom.Text = "";
-            // 
-            // cMenuRTBoxBottom
-            // 
-            this.cMenuRTBoxBottom.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1,
-            this.toolStripMenuItem2});
-            this.cMenuRTBoxBottom.Name = "cMenuRTBoxTop";
-            this.cMenuRTBoxBottom.Size = new System.Drawing.Size(124, 48);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(123, 22);
-            this.toolStripMenuItem1.Text = "Sellect all";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(123, 22);
-            this.toolStripMenuItem2.Text = "Copy";
-            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // cMenuIDHeader
             // 
@@ -420,6 +296,131 @@
             this.toolStripMenuItem3.Size = new System.Drawing.Size(165, 22);
             this.toolStripMenuItem3.Text = "Close trace";
             // 
+            // rtbDetailsTop
+            // 
+            this.rtbDetailsTop.AutoWordSelection = true;
+            this.rtbDetailsTop.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtbDetailsTop.ContextMenuStrip = this.cMenuRTBoxTop;
+            this.rtbDetailsTop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtbDetailsTop.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.rtbDetailsTop.Location = new System.Drawing.Point(0, 0);
+            this.rtbDetailsTop.Name = "rtbDetailsTop";
+            this.rtbDetailsTop.Size = new System.Drawing.Size(237, 300);
+            this.rtbDetailsTop.TabIndex = 0;
+            this.rtbDetailsTop.Tag = "Top";
+            this.rtbDetailsTop.Text = "";
+            // 
+            // cMenuRTBoxTop
+            // 
+            this.cMenuRTBoxTop.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.sellectAllToolStripMenuItem,
+            this.copyToolStripMenuItem});
+            this.cMenuRTBoxTop.Name = "cMenuRTBoxTop";
+            this.cMenuRTBoxTop.Size = new System.Drawing.Size(124, 48);
+            // 
+            // sellectAllToolStripMenuItem
+            // 
+            this.sellectAllToolStripMenuItem.Name = "sellectAllToolStripMenuItem";
+            this.sellectAllToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.sellectAllToolStripMenuItem.Text = "Sellect all";
+            this.sellectAllToolStripMenuItem.Click += new System.EventHandler(this.sellectAllToolStripMenuItem_Click);
+            // 
+            // copyToolStripMenuItem
+            // 
+            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.copyToolStripMenuItem.Text = "Copy";
+            this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
+            // 
+            // scVerticalBottom
+            // 
+            this.scVerticalBottom.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.scVerticalBottom.Location = new System.Drawing.Point(0, 0);
+            this.scVerticalBottom.Name = "scVerticalBottom";
+            // 
+            // scVerticalBottom.Panel1
+            // 
+            this.scVerticalBottom.Panel1.Controls.Add(this.dgvTraceBottom);
+            this.scVerticalBottom.Panel1MinSize = 200;
+            // 
+            // scVerticalBottom.Panel2
+            // 
+            this.scVerticalBottom.Panel2.Controls.Add(this.rtbDetailsBottom);
+            this.scVerticalBottom.Panel2MinSize = 200;
+            this.scVerticalBottom.Size = new System.Drawing.Size(800, 297);
+            this.scVerticalBottom.SplitterDistance = 560;
+            this.scVerticalBottom.SplitterWidth = 3;
+            this.scVerticalBottom.TabIndex = 0;
+            this.scVerticalBottom.SplitterMoving += new System.Windows.Forms.SplitterCancelEventHandler(this.scVerticalBottom_SplitterMoving);
+            this.scVerticalBottom.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.scVerticalBottom_SplitterMoved);
+            // 
+            // dgvTraceBottom
+            // 
+            this.dgvTraceBottom.AllowUserToOrderColumns = true;
+            this.dgvTraceBottom.AllowUserToResizeRows = false;
+            this.dgvTraceBottom.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvTraceBottom.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvTraceBottom.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvTraceBottom.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvTraceBottom.DefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvTraceBottom.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvTraceBottom.Location = new System.Drawing.Point(0, 0);
+            this.dgvTraceBottom.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
+            this.dgvTraceBottom.Name = "dgvTraceBottom";
+            this.dgvTraceBottom.ReadOnly = true;
+            this.dgvTraceBottom.RowHeadersVisible = false;
+            this.dgvTraceBottom.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvTraceBottom.Size = new System.Drawing.Size(560, 297);
+            this.dgvTraceBottom.TabIndex = 1;
+            this.dgvTraceBottom.Tag = "Bottom";
+            this.dgvTraceBottom.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTraceBottom_CellMouseEnter);
+            this.dgvTraceBottom.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvTraceBottom_DataBindingComplete);
+            this.dgvTraceBottom.SelectionChanged += new System.EventHandler(this.dgvTraceBottom_SelectionChanged);
+            this.dgvTraceBottom.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvTraceBottom_MouseClick);
+            // 
+            // rtbDetailsBottom
+            // 
+            this.rtbDetailsBottom.AutoWordSelection = true;
+            this.rtbDetailsBottom.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtbDetailsBottom.ContextMenuStrip = this.cMenuRTBoxBottom;
+            this.rtbDetailsBottom.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtbDetailsBottom.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.rtbDetailsBottom.Location = new System.Drawing.Point(0, 0);
+            this.rtbDetailsBottom.Name = "rtbDetailsBottom";
+            this.rtbDetailsBottom.Size = new System.Drawing.Size(237, 297);
+            this.rtbDetailsBottom.TabIndex = 1;
+            this.rtbDetailsBottom.Tag = "Bottom";
+            this.rtbDetailsBottom.Text = "";
+            // 
+            // cMenuRTBoxBottom
+            // 
+            this.cMenuRTBoxBottom.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.toolStripMenuItem2});
+            this.cMenuRTBoxBottom.Name = "cMenuRTBoxTop";
+            this.cMenuRTBoxBottom.Size = new System.Drawing.Size(124, 48);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(123, 22);
+            this.toolStripMenuItem1.Text = "Sellect all";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(123, 22);
+            this.toolStripMenuItem2.Text = "Copy";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
             // TraceTemplate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -437,6 +438,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.scVerticalTop)).EndInit();
             this.scVerticalTop.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvTraceTop)).EndInit();
+            this.cMenuIDHeader.ResumeLayout(false);
             this.cMenuRTBoxTop.ResumeLayout(false);
             this.scVerticalBottom.Panel1.ResumeLayout(false);
             this.scVerticalBottom.Panel2.ResumeLayout(false);
@@ -444,7 +446,6 @@
             this.scVerticalBottom.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvTraceBottom)).EndInit();
             this.cMenuRTBoxBottom.ResumeLayout(false);
-            this.cMenuIDHeader.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

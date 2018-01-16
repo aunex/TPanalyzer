@@ -1,6 +1,7 @@
 ﻿// To do LIST               
 
 // TODO: recent files
+// TODO: Form for selecting colors (in trace rows diagnostics highlight, even and odd differentiate, ID selector even and odd diferentiate)
 
 
 using System;
@@ -23,37 +24,37 @@ namespace TPanalyzer
         {
             // Requests
             // Diagnostic and communications management
-            DiagnosticSessionControl = 0x10,
-            ECUReset = 0x11,
-            SecurityAcces = 0x27,
-            CommunicationControl = 0x28,
-            TesterPresent = 0x3E,
-            AccesTimingParameters = 0x83,
-            SecuredDataTransmission = 0x84,
-            ControlDTCSettings = 0x85,
-            ResponseOnEvent = 0x86,
-            LinkControl = 0x87,
+            Rq_DiagnosticSessionControl = 0x10,
+            Rq_ECUReset = 0x11,
+            Rq_SecurityAcces = 0x27,
+            Rq_CommunicationControl = 0x28,
+            Rq_TesterPresent = 0x3E,
+            Rq_AccesTimingParameters = 0x83,
+            Rq_SecuredDataTransmission = 0x84,
+            Rq_ControlDTCSettings = 0x85,
+            Rq_ResponseOnEvent = 0x86,
+            Rq_LinkControl = 0x87,
             //Data transmission
-            ReadDataById = 0x22,
-            ReadMemoryByAddress = 0x23,
-            ReadScalingDataByIdentifier = 0x24,
-            ReadDataByPeriodicIdentifier = 0x2A,
-            DynamicallyDefineDataIdentifier = 0x2C,
-            WriteDataById = 0x2E,
-            WriteMemoryByAddress = 0x3D,
+            Rq_ReadDataById = 0x22,
+            Rq_ReadMemoryByAddress = 0x23,
+            Rq_ReadScalingDataByIdentifier = 0x24,
+            Rq_ReadDataByPeriodicIdentifier = 0x2A,
+            Rq_DynamicallyDefineDataIdentifier = 0x2C,
+            Rq_WriteDataById = 0x2E,
+            Rq_WriteMemoryByAddress = 0x3D,
             //Stored data transmission
-            ClearDiagInfo = 0x14,
-            ReadDiagInfo = 0x19,
+            Rq_ClearDiagInfo = 0x14,
+            Rq_ReadDiagInfo = 0x19,
             //Input/output control
-            InOutControlByIdentifier = 0x2F,
+            Rq_InOutControlByIdentifier = 0x2F,
             //Remote activation of routine
-            RoutineControl = 0x31,
+            Rq_RoutineControl = 0x31,
             //Upload and download
-            RequestDownload = 0x34,
-            RequestUpload = 0x35,
-            TransferDat = 0x36,
-            RequestTransferExit = 0x37,
-            RequestFileTransfer = 0x38,
+            Rq_RequestDownload = 0x34,
+            Rq_RequestUpload = 0x35,
+            Rq_TransferDat = 0x36,
+            Rq_RequestTransferExit = 0x37,
+            Rq_RequestFileTransfer = 0x38,
 
             // Positive Responses
             PosResp_DiagnosticSessionControl = 0x50,
@@ -88,9 +89,52 @@ namespace TPanalyzer
             PosResp_RequestTransferExit = 0x77,
             PosResp_RequestFileTransfer = 0x78,
             // Negative response
-            NegativeResponse = 0x7F
+            NegResp_ = 0x7F
         }
         public Sid sid;
+        public enum Nrc
+        {
+            GeneralReject = 0x10,
+            ServiceNotSupported = 0x11,
+            SubfunctionNotSupported = 0x12,
+            IncorrectMessageLength_InvalidFormat = 0x13,
+            BussyRepeatRequest = 0x21,
+            ConditionsNotCorrect = 0x22,
+            RequestSequenceError = 0x24,
+            NoResponseFromSubnetComponent = 0x25,
+            FailurePreventsExecutionOfRequestedAction = 0x26,
+            RequestOutOfRange = 0x31,
+            ScurityAccesDenied = 0x33,
+            InvalidKey = 0x35,
+            ExceedNumberOfAttempts = 0x36,
+            RequiredTimeDelayNotExpired = 0x37,
+            UploadDownloadNotAccepted = 0x70,
+            TransferDataSuspended = 0x71,
+            GeneralProgrammingFailure = 0x72,
+            WrongBlockSequenceCounter = 0x73,
+            ResponsePending = 0x78,
+            SubFunctionNotSupportedInActiveDiagnosticSession = 0x7E,
+            ServiceNotSupportedInActiveDiagnosticSession = 0x7F,
+            RpmTooHigh = 0x81,
+            RpmTooLow = 0x82,
+            EngineIsRunning = 0x83,
+            EngineIsNotRunning = 0x84,
+            EngineRunTimeTooLow = 0x85,
+            TemperatureTooHigh = 0x86,
+            TemperatureTooLow = 0x87,
+            VehicleSpeedTooHigh = 0x88,
+            VehicleSpeedTooLow = 0x89,
+            ThrottlePedalTooHigh = 0x8A,
+            ThrottlePedalTooLow = 0x8B,
+            TransmissionRangeNotInNeutral = 0x8C,
+            TransmissionRangeNotInGear = 0x8D,
+            BreakSwitchNotClosed = 0x8F,
+            ShifterLeverNotInPark = 0x90,
+            TorqueConvertedClutchLocked = 0x91,
+            VoltageTooHigh = 0x92,
+            VoltageTooLow = 0x93,
+            
+        }
         public int did;
         public byte[] parameters;
         public bool validData;       // frame contain the correct number of bytes for all bytes = true
@@ -384,39 +428,10 @@ namespace TPanalyzer
 
         public List<DiagServiceconfig> UDSCONFIG = new List<DiagServiceconfig>()
         {
-            {new DiagServiceconfig(oneDiagServiceInfo.Sid.ClearDiagInfo, 1, "ClearDiagInfo", "Clear diagnostic information",new string[1] {"GroupOfDTC"}, new int [1] {0}, new int [1] {21})},
-            {new DiagServiceconfig(oneDiagServiceInfo.Sid.DiagnosticSessionControl, 2, "DiagSessionControl", "Diagnostic session control",new string[2] {"SPR", "DiagnosticSessionType"}, new int [2] {0,1}, new int [2] {1, 7})}
+         //   {new DiagServiceconfig(oneDiagServiceInfo.Sid.ClearDiagInfo, 1, "ClearDiagInfo", "Clear diagnostic information",new string[1] {"GroupOfDTC"}, new int [1] {0}, new int [1] {21})},
+         //   {new DiagServiceconfig(oneDiagServiceInfo.Sid.DiagnosticSessionControl, 2, "DiagSessionControl", "Diagnostic session control",new string[2] {"SPR", "DiagnosticSessionType"}, new int [2] {0,1}, new int [2] {1, 7})}
         };
-
-        //{ oneUdsServiceInfo.Sid.ClearDiagInfo, 1 },
-        //{ oneUdsServiceInfo.Sid.CommunicationControl, 1 },
-        //{ oneUdsServiceInfo.Sid.ControlDTCSettings, 1 },
-        //{ oneUdsServiceInfo.Sid.DiagnosticSessionControl, 1 },
-        //{ oneUdsServiceInfo.Sid.DynamicallyDefineDataIdentifier, 1 },
-        //{ oneUdsServiceInfo.Sid.ECUReset, 1 },
-        //{ oneUdsServiceInfo.Sid.InOutControlByIdentifier, 1 },
-        //{ oneUdsServiceInfo.Sid.LinkControl, 1 },
-        //{ oneUdsServiceInfo.Sid.NegativeResponse, 1 },
-        //{ oneUdsServiceInfo.Sid.PosResp_AccesTimingParameters, 1 },
-        //{ oneUdsServiceInfo.Sid.PosResp_ClearDiagInfo, 1 },
-        //{ oneUdsServiceInfo.Sid.PosResp_CommunicationControl, 1 },
-        //{ oneUdsServiceInfo.Sid.PosResp_ControlDTCSettings, 1 },
-        //{ oneUdsServiceInfo.Sid.PosResp_DiagnosticSessionControl, 1 },
-        //{ oneUdsServiceInfo.Sid.PosResp_DynamicallyDefineDataIdentifier, 1 },
-        //{ oneUdsServiceInfo.Sid.PosResp_ECUReset, 1 },
-        //{ oneUdsServiceInfo.Sid.PosResp_InOutControlByIdentifier, 1 },
-        //{ oneUdsServiceInfo.Sid.PosResp_LinkControl,1 },
-        //{ oneUdsServiceInfo.Sid.PosResp_ReadDataById, 1 },
-        //{ oneUdsServiceInfo.Sid.PosResp_ReadDataByPeriodicIdentifier, 1 },
-        //{ oneUdsServiceInfo.Sid.PosResp_ReadDiagInfo, 1 },
-        //{ oneUdsServiceInfo.Sid.PosResp_ReadMemoryByAddress, 1 },
-        //{ oneUdsServiceInfo.Sid.PosResp_ReadScalingDataByIdentifier, 1 },
-        //{ oneUdsServiceInfo.Sid.PosResp_ReadDataByPeriodicIdentifier, 1 },
-        //{ oneUdsServiceInfo.Sid.PosResp_ReadDataByPeriodicIdentifier, 1 },
-        //{ oneUdsServiceInfo.Sid.PosResp_ReadDataByPeriodicIdentifier, 1 },
-        //{ oneUdsServiceInfo.Sid.PosResp_ReadDataByPeriodicIdentifier, 1 },
-
-            
+           
         // ===========================================================================================================================================================
 
         static BackgroundWorker bwParseTrace;    // Background worker for running analysis of ASC file in the seperate thread
@@ -1088,7 +1103,11 @@ namespace TPanalyzer
                                 {
                                     strUdsKwpDetails += string.Format(", DID = 0x{0}", diagFrameInfo.services[0].did.ToString("X4"));
                                 }
-                                strUdsKwpDetails += string.Format(", Parameters count = {0}", diagFrameInfo.services[0].parameters.Length);
+                                if (diagFrameInfo.services[0].sid == oneDiagServiceInfo.Sid.NegResp_)
+                                {
+                                    strUdsKwpDetails += string.Format("{0}", (oneDiagServiceInfo.Nrc)(diagFrameInfo.services[0].parameters[1]));
+                                }
+
                             }
                             else if (tpInfo.frameType == IsoTpInformation.FrameType.Consecutive)
                             {
@@ -1103,7 +1122,13 @@ namespace TPanalyzer
                                     {
                                         strUdsKwpDetails += string.Format(", DID = 0x{0}", diagFrameInfo.services[0].did.ToString("X4"));
                                     }
-                                    strUdsKwpDetails += string.Format(", Parameters count = {0}", diagFrameInfo.services[0].parameters.Length);
+
+                                    if (diagFrameInfo.services[0].sid == oneDiagServiceInfo.Sid.NegResp_)
+                                    {
+                                        ///TODO: implement reaction for NRC without value in enum type
+                                        strUdsKwpDetails += string.Format("{0}", (oneDiagServiceInfo.Nrc)(diagFrameInfo.services[0].parameters[1]));
+                                    }
+
                                 }
                                 else
                                 {
@@ -1309,52 +1334,52 @@ namespace TPanalyzer
 
             switch (sid)
             {
-                case (oneDiagServiceInfo.Sid.AccesTimingParameters):
+                case (oneDiagServiceInfo.Sid.Rq_AccesTimingParameters):
                     {
                             result = -1;        // not fix number of parameters bytes or parameters count unknown
                             break;
                     }
-                case (oneDiagServiceInfo.Sid.ClearDiagInfo):
+                case (oneDiagServiceInfo.Sid.Rq_ClearDiagInfo):
                     {
                         result = 3;        
                         break;
                     }
-                case (oneDiagServiceInfo.Sid.CommunicationControl):
+                case (oneDiagServiceInfo.Sid.Rq_CommunicationControl):
                     {
                         result = 2;       
                         break;
                     }
-                case (oneDiagServiceInfo.Sid.ControlDTCSettings):
+                case (oneDiagServiceInfo.Sid.Rq_ControlDTCSettings):
                     {
                         result = 4;      
                         break;
                     }
-                case (oneDiagServiceInfo.Sid.DiagnosticSessionControl):
+                case (oneDiagServiceInfo.Sid.Rq_DiagnosticSessionControl):
                     {
                         result = 1;
                         break;
                     }
-                case (oneDiagServiceInfo.Sid.DynamicallyDefineDataIdentifier):
+                case (oneDiagServiceInfo.Sid.Rq_DynamicallyDefineDataIdentifier):
                     {
                         result = -1;        // not fix number of parameters bytes or parameters count unknown
                         break;
                     }
-                case (oneDiagServiceInfo.Sid.ECUReset):
+                case (oneDiagServiceInfo.Sid.Rq_ECUReset):
                     {
                         result = 1;  
                         break;
                     }
-                case (oneDiagServiceInfo.Sid.InOutControlByIdentifier):
+                case (oneDiagServiceInfo.Sid.Rq_InOutControlByIdentifier):
                     {
                         result = -1;        // not fix number of parameters bytes or parameters count unknown
                         break;
                     }
-                case (oneDiagServiceInfo.Sid.LinkControl):
+                case (oneDiagServiceInfo.Sid.Rq_LinkControl):
                     {
                         result = -1;        // not fix number of parameters bytes or parameters count unknown
                         break;
                     }
-                case (oneDiagServiceInfo.Sid.NegativeResponse):
+                case (oneDiagServiceInfo.Sid.NegResp_):
                     {
                         result = 2;       
                         break;
@@ -1456,7 +1481,7 @@ namespace TPanalyzer
                     }
                 case (oneDiagServiceInfo.Sid.PosResp_RoutineControl):
                     {
-                        result = 6;        // not fix number of parameters bytes or parameters count unknown
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
                         break;
                     }
                 case (oneDiagServiceInfo.Sid.PosResp_SecuredDataTransmission):
@@ -1489,87 +1514,87 @@ namespace TPanalyzer
                         result = -1;        // not fix number of parameters bytes or parameters count unknown
                         break;
                     }
-                case (oneDiagServiceInfo.Sid.ReadDataById):
+                case (oneDiagServiceInfo.Sid.Rq_ReadDataById):
                     {
                         result = -1;        // not fix number of parameters bytes or parameters count unknown
                         break;
                     }
-                case (oneDiagServiceInfo.Sid.ReadDataByPeriodicIdentifier):
+                case (oneDiagServiceInfo.Sid.Rq_ReadDataByPeriodicIdentifier):
                     {
                         result = -1;        // not fix number of parameters bytes or parameters count unknown
                         break;
                     }
-                case (oneDiagServiceInfo.Sid.ReadDiagInfo):
+                case (oneDiagServiceInfo.Sid.Rq_ReadDiagInfo):
                     {
                         result = -1;        // not fix number of parameters bytes or parameters count unknown
                         break;
                     }
-                case (oneDiagServiceInfo.Sid.ReadMemoryByAddress):
+                case (oneDiagServiceInfo.Sid.Rq_ReadMemoryByAddress):
                     {
                         result = -1;        // not fix number of parameters bytes or parameters count unknown
                         break;
                     }
-                case (oneDiagServiceInfo.Sid.ReadScalingDataByIdentifier):
+                case (oneDiagServiceInfo.Sid.Rq_ReadScalingDataByIdentifier):
                     {
                         result = -1;        // not fix number of parameters bytes or parameters count unknown
                         break;
                     }
-                case (oneDiagServiceInfo.Sid.RequestDownload):
+                case (oneDiagServiceInfo.Sid.Rq_RequestDownload):
                     {
                         result = -1;        // not fix number of parameters bytes or parameters count unknown
                         break;
                     }
-                case (oneDiagServiceInfo.Sid.RequestFileTransfer):
+                case (oneDiagServiceInfo.Sid.Rq_RequestFileTransfer):
                     {
                         result = -1;        // not fix number of parameters bytes or parameters count unknown
                         break;
                     }
-                case (oneDiagServiceInfo.Sid.RequestTransferExit):
+                case (oneDiagServiceInfo.Sid.Rq_RequestTransferExit):
                     {
                         result = 0; 
                         break;
                     }
-                case (oneDiagServiceInfo.Sid.RequestUpload):
+                case (oneDiagServiceInfo.Sid.Rq_RequestUpload):
                     {
                         result = -1;        // not fix number of parameters bytes or parameters count unknown
                         break;
                     }
-                case (oneDiagServiceInfo.Sid.ResponseOnEvent):
+                case (oneDiagServiceInfo.Sid.Rq_ResponseOnEvent):
                     {
                         result = 6; 
                         break;
                     }
-                case (oneDiagServiceInfo.Sid.RoutineControl):
-                    {
-                        result = 6;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.SecuredDataTransmission):
+                case (oneDiagServiceInfo.Sid.Rq_RoutineControl):
                     {
                         result = -1;        // not fix number of parameters bytes or parameters count unknown
                         break;
                     }
-                case (oneDiagServiceInfo.Sid.SecurityAcces):
+                case (oneDiagServiceInfo.Sid.Rq_SecuredDataTransmission):
                     {
                         result = -1;        // not fix number of parameters bytes or parameters count unknown
                         break;
                     }
-                case (oneDiagServiceInfo.Sid.TesterPresent):
+                case (oneDiagServiceInfo.Sid.Rq_SecurityAcces):
+                    {
+                        result = -1;        // not fix number of parameters bytes or parameters count unknown
+                        break;
+                    }
+                case (oneDiagServiceInfo.Sid.Rq_TesterPresent):
                     {
                         result = 1; 
                         break;
                     }
-                case (oneDiagServiceInfo.Sid.TransferDat):
+                case (oneDiagServiceInfo.Sid.Rq_TransferDat):
                     {
                         result = -1;        // not fix number of parameters bytes or parameters count unknown
                         break;
                     }
-                case (oneDiagServiceInfo.Sid.WriteDataById):
+                case (oneDiagServiceInfo.Sid.Rq_WriteDataById):
                     {
                         result = -1;        // not fix number of parameters bytes or parameters count unknown
                         break;
                     }
-                case (oneDiagServiceInfo.Sid.WriteMemoryByAddress):
+                case (oneDiagServiceInfo.Sid.Rq_WriteMemoryByAddress):
                     {
                         result = -1;        // not fix number of parameters bytes or parameters count unknown
                         break;
@@ -1618,27 +1643,27 @@ namespace TPanalyzer
                             result = 1;        
                             break;
                         }
-                    case (oneDiagServiceInfo.Sid.ReadDataById):
+                    case (oneDiagServiceInfo.Sid.Rq_ReadDataById):
                         {
                             result = 1;        
                             break;
                         }
-                    case (oneDiagServiceInfo.Sid.ReadDataByPeriodicIdentifier):
+                    case (oneDiagServiceInfo.Sid.Rq_ReadDataByPeriodicIdentifier):
                         {
                             result = 1;        
                             break;
                         }
-                    case (oneDiagServiceInfo.Sid.ReadScalingDataByIdentifier):
+                    case (oneDiagServiceInfo.Sid.Rq_ReadScalingDataByIdentifier):
                         {
                             result = 1;   
                             break;
                         }
-                    case (oneDiagServiceInfo.Sid.RoutineControl):
+                    case (oneDiagServiceInfo.Sid.Rq_RoutineControl):
                         {
                             result = 1;       
                             break;
                         }
-                    case (oneDiagServiceInfo.Sid.WriteDataById):
+                    case (oneDiagServiceInfo.Sid.Rq_WriteDataById):
                         {
                             result = 1;      
                             break;
@@ -1701,8 +1726,8 @@ namespace TPanalyzer
                     {
                         result.services[result.servicesCount].validData = false;
                     }
-                    pointer += tempByteCount + 1;
                 }
+                pointer += tempByteCount + 1;
             }
 
             var tempDIDposition = getDIDposition(result.services[result.servicesCount].sid);
@@ -1744,7 +1769,7 @@ namespace TPanalyzer
                     { 
                         if (dtTracesA[activeTabIndex].Rows[rowIndex] != null )
                         {
-                            result += "Details for single selected message:\n\n";
+                            result += "Details for selected message:\n\n";
                             result += "Selected row = " + rowIndex.ToString() + "\n";
                             result += "Timestamp = " + dtTracesA[activeTabIndex].Rows[rowIndex].Field<float>(0).ToString() + "\n";
                             result += "Type of record = " + dtTracesA[activeTabIndex].Rows[rowIndex].Field<string>(1) + "\n";
@@ -1803,6 +1828,11 @@ namespace TPanalyzer
                                     if (diagInfoList[activeTabIndex][rowIndex].services[0].did != -1)
                                     {
                                         result += string.Format("DID = 0x{0} \n", diagInfoList[activeTabIndex][rowIndex].services[0].did.ToString("X4"));
+                                    }
+                                    if (diagInfoList[activeTabIndex][rowIndex].services[0].sid == oneDiagServiceInfo.Sid.NegResp_)
+                                    {
+                                        result += string.Format("NRC type = {0} (0x{1}) \n", (oneDiagServiceInfo.Nrc)(diagInfoList[activeTabIndex][rowIndex].services[0].parameters[1]), diagInfoList[activeTabIndex][rowIndex].services[0].parameters[1]);
+                                        ///TODO: implement reaction for NRC without value in enum type
                                     }
                                     result += "\n";
                                 }

@@ -772,5 +772,31 @@ namespace traceTemplate
         {
             Clipboard.SetText(rtbDetailsBottom.SelectedText);
         }
+
+        private void dgvTraceTop_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex>0)
+            {
+                if (dgvTraceTop.Rows[e.RowIndex].Cells[11].Value != null)
+                {
+                    if (dgvTraceTop.Rows[e.RowIndex].Cells[11].Value.ToString().Contains("NegResp_"))
+                    {
+                        dgvTraceTop.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.IndianRed;
+                    }
+                    else if (dgvTraceTop.Rows[e.RowIndex].Cells[11].Value.ToString().Contains("PosResp_"))
+                    {
+                        dgvTraceTop.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightGreen;
+                    }
+                    else if (dgvTraceTop.Rows[e.RowIndex].Cells[11].Value.ToString().Contains("Rq_"))
+                    {
+                        dgvTraceTop.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightBlue;
+                    }
+                    else if (e.RowIndex % 2 != 0)
+                    {
+                        dgvTraceTop.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightGray;
+                    }
+                }
+            }
+        }
     }
 }
