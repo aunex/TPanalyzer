@@ -18,128 +18,166 @@ using IDselector;
 
 namespace TPanalyzer
 {
+    public enum UDSSid
+    {
+        // Requests
+        // Diagnostic and communications management
+        UDS_Rq_DiagnosticSessionControl = 0x10,
+        UDS_Rq_ECUReset = 0x11,
+        UDS_Rq_SecurityAcces = 0x27,
+        UDS_Rq_CommunicationControl = 0x28,
+        UDS_Rq_TesterPresent = 0x3E,
+        UDS_Rq_AccesTimingParameters = 0x83,
+        UDS_Rq_SecuredDataTransmission = 0x84,
+        UDS_Rq_ControlDTCSettings = 0x85,
+        UDS_Rq_ResponseOnEvent = 0x86,
+        UDS_Rq_LinkControl = 0x87,
+        //Data transmission
+        UDS_Rq_ReadDataById = 0x22,
+        UDS_Rq_ReadMemoryByAddress = 0x23,
+        UDS_Rq_ReadScalingDataByIdentifier = 0x24,
+        UDS_Rq_ReadDataByPeriodicIdentifier = 0x2A,
+        UDS_Rq_DynamicallyDefineDataIdentifier = 0x2C,
+        UDS_Rq_WriteDataById = 0x2E,
+        UDS_Rq_WriteMemoryByAddress = 0x3D,
+        //Stored data transmission
+        UDS_Rq_ClearDiagInfo = 0x14,
+        UDS_Rq_ReadDiagInfo = 0x19,
+        //Input/output control
+        UDS_Rq_InOutControlByIdentifier = 0x2F,
+        //Remote activation of routine
+        UDS_Rq_RoutineControl = 0x31,
+        //Upload and download
+        UDS_Rq_RequestDownload = 0x34,
+        UDS_Rq_RequestUpload = 0x35,
+        UDS_Rq_TransferDat = 0x36,
+        UDS_Rq_RequestTransferExit = 0x37,
+        UDS_Rq_RequestFileTransfer = 0x38,
+
+        // Positive Responses
+        UDS_PosResp_DiagnosticSessionControl = 0x50,
+        UDS_PosResp_ECUReset = 0x51,
+        UDS_PosResp_SecurityAcces = 0x67,
+        UDS_PosResp_CommunicationControl = 0x68,
+        UDS_PosResp_TesterPresent = 0x7E,
+        UDS_PosResp_AccesTimingParameters = 0xC3,
+        UDS_PosResp_SecuredDataTransmission = 0xC4,
+        UDS_PosResp_ControlDTCSettings = 0xC5,
+        UDS_PosResp_ResponseOnEvent = 0xC6,
+        UDS_PosResp_LinkControl = 0xC7,
+        UDS_PosResp_ReadDataById = 0x62,
+        UDS_PosResp_ReadMemoryByAddress = 0x63,
+        UDS_PosResp_ReadScalingDataByIdentifier = 0x64,
+        UDS_PosResp_ReadDataByPeriodicIdentifier = 0x6A,
+        UDS_PosResp_DynamicallyDefineDataIdentifier = 0x6C,
+        UDS_PosResp_WriteDataById = 0x6E,
+        UDS_PosResp_WriteMemoryByAddress = 0x7D,
+        UDS_PosResp_ClearDiagInfo = 0x54,
+        UDS_PosResp_ReadDiagInfo = 0x59,
+        UDS_PosResp_InOutControlByIdentifier = 0x6F,
+        UDS_PosResp_RoutineControl = 0x71,
+        UDS_PosResp_RequestDownload = 0x74,
+        UDS_PosResp_RequestUpload = 0x75,
+        UDS_PosResp_TransferDat = 0x76,
+        UDS_PosResp_RequestTransferExit = 0x77,
+        UDS_PosResp_RequestFileTransfer = 0x78,
+        // Negative response
+        UDS_NegResp_ = 0x7F
+    }
+
+    public enum UDSNrc
+    {
+        GeneralReject = 0x10,
+        ServiceNotSupported = 0x11,
+        SubfunctionNotSupported = 0x12,
+        IncorrectMessageLength_InvalidFormat = 0x13,
+        BussyRepeatRequest = 0x21,
+        ConditionsNotCorrect = 0x22,
+        RequestSequenceError = 0x24,
+        NoResponseFromSubnetComponent = 0x25,
+        FailurePreventsExecutionOfRequestedAction = 0x26,
+        RequestOutOfRange = 0x31,
+        ScurityAccesDenied = 0x33,
+        InvalidKey = 0x35,
+        ExceedNumberOfAttempts = 0x36,
+        RequiredTimeDelayNotExpired = 0x37,
+        UploadDownloadNotAccepted = 0x70,
+        TransferDataSuspended = 0x71,
+        GeneralProgrammingFailure = 0x72,
+        WrongBlockSequenceCounter = 0x73,
+        ResponsePending = 0x78,
+        SubFunctionNotSupportedInActiveDiagnosticSession = 0x7E,
+        ServiceNotSupportedInActiveDiagnosticSession = 0x7F,
+        RpmTooHigh = 0x81,
+        RpmTooLow = 0x82,
+        EngineIsRunning = 0x83,
+        EngineIsNotRunning = 0x84,
+        EngineRunTimeTooLow = 0x85,
+        TemperatureTooHigh = 0x86,
+        TemperatureTooLow = 0x87,
+        VehicleSpeedTooHigh = 0x88,
+        VehicleSpeedTooLow = 0x89,
+        ThrottlePedalTooHigh = 0x8A,
+        ThrottlePedalTooLow = 0x8B,
+        TransmissionRangeNotInNeutral = 0x8C,
+        TransmissionRangeNotInGear = 0x8D,
+        BreakSwitchNotClosed = 0x8F,
+        ShifterLeverNotInPark = 0x90,
+        TorqueConvertedClutchLocked = 0x91,
+        VoltageTooHigh = 0x92,
+        VoltageTooLow = 0x93,
+
+    }
+
+    public enum KWPSid
+    {
+	    KWP_Rq_StartDiagnosticSession                      = 0x10,
+	    KWP_Rq_ReadFreezeFrameData                         = 0x12,
+        KWP_Rq_EscCode                                     = 0x80,
+	    KWP_Rq_ReadDiagnosticTroubleCodes                  = 0x13,
+	    KWP_Rq_ClearDiagnosticInformation                  = 0x14,
+	    KWP_Rq_ReadStatusOfDiagnosticTroubleCodes          = 0x17,
+	    KWP_Rq_ReadDiagnosticTroubleCodesByStatus          = 0x18,
+        KWP_Rq_ReadECUIdentification                       = 0x1a,
+	    KWP_Rq_StopDiagnosticSession                       = 0x20,
+	    KWP_Rq_ReadDataByLocalIdentifier                   = 0x21,
+	    KWP_Rq_ECUReset                                    = 0x11,
+	    KWP_Rq_ReadDataByCommonIdentifier                  = 0x22,
+	    KWP_Rq_ReadMemoryByAddress                         = 0x23,
+	    KWP_Rq_SetDataRates                                = 0x26,
+	    KWP_Rq_SecurityAccess                              = 0x27,
+        KWP_Rq_DynamicallyDefineLocalIdentifier            = 0x2c,
+	    KWP_Rq_WriteDataByCommonIdentifier                 = 0x2e,
+	    KWP_Rq_InputOutputControlByCommonIdentifier        = 0x2f,
+	    KWP_Rq_InputOutputControlByLocalIdentifier         = 0x30,
+	    KWP_Rq_StartRoutineByLocalIdentifier               = 0x31,
+	    KWP_Rq_StopRoutineByLocalIdentifier                = 0x32,
+	    KWP_Rq_RequestRoutineResultsByLocalIdentifier      = 0x33,
+	    KWP_Rq_RequestDownload                             = 0x34,
+	    KWP_Rq_RequestUpload                               = 0x35,
+	    KWP_Rq_TransferData                                = 0x36,
+	    KWP_Rq_RequestTransferExit                         = 0x37,
+	    KWP_Rq_StartRoutineByAddress                       = 0x38,
+	    KWP_Rq_StopRoutineByAddress                        = 0x39,
+        KWP_Rq_RequestRoutineResultsByAddress              = 0x3a,
+        KWP_Rq_WriteDataByLocalIdentifier                  = 0x3b,
+	    KWP_Rq_WriteMemoryByAddress                        = 0x3d,
+	    KWP_Rq_TesterPresent                               = 0x3e
+    }
+
+    public enum KWPNrc
+    {
+
+    }
+
     public struct oneDiagServiceInfo
     {
-        public enum Sid
-        {
-            // Requests
-            // Diagnostic and communications management
-            Rq_DiagnosticSessionControl = 0x10,
-            Rq_ECUReset = 0x11,
-            Rq_SecurityAcces = 0x27,
-            Rq_CommunicationControl = 0x28,
-            Rq_TesterPresent = 0x3E,
-            Rq_AccesTimingParameters = 0x83,
-            Rq_SecuredDataTransmission = 0x84,
-            Rq_ControlDTCSettings = 0x85,
-            Rq_ResponseOnEvent = 0x86,
-            Rq_LinkControl = 0x87,
-            //Data transmission
-            Rq_ReadDataById = 0x22,
-            Rq_ReadMemoryByAddress = 0x23,
-            Rq_ReadScalingDataByIdentifier = 0x24,
-            Rq_ReadDataByPeriodicIdentifier = 0x2A,
-            Rq_DynamicallyDefineDataIdentifier = 0x2C,
-            Rq_WriteDataById = 0x2E,
-            Rq_WriteMemoryByAddress = 0x3D,
-            //Stored data transmission
-            Rq_ClearDiagInfo = 0x14,
-            Rq_ReadDiagInfo = 0x19,
-            //Input/output control
-            Rq_InOutControlByIdentifier = 0x2F,
-            //Remote activation of routine
-            Rq_RoutineControl = 0x31,
-            //Upload and download
-            Rq_RequestDownload = 0x34,
-            Rq_RequestUpload = 0x35,
-            Rq_TransferDat = 0x36,
-            Rq_RequestTransferExit = 0x37,
-            Rq_RequestFileTransfer = 0x38,
-
-            // Positive Responses
-            PosResp_DiagnosticSessionControl = 0x50,
-            PosResp_ECUReset = 0x51,
-            PosResp_SecurityAcces = 0x67,
-            PosResp_CommunicationControl = 0x68,
-            PosResp_TesterPresent = 0x7E,
-            PosResp_AccesTimingParameters = 0xC3,
-            PosResp_SecuredDataTransmission = 0xC4,
-            PosResp_ControlDTCSettings = 0xC5,
-            PosResp_ResponseOnEvent = 0xC6,
-            PosResp_LinkControl = 0xC7,
-            //Data transmission
-            PosResp_ReadDataById = 0x62,
-            PosResp_ReadMemoryByAddress = 0x63,
-            PosResp_ReadScalingDataByIdentifier = 0x64,
-            PosResp_ReadDataByPeriodicIdentifier = 0x6A,
-            PosResp_DynamicallyDefineDataIdentifier = 0x6C,
-            PosResp_WriteDataById = 0x6E,
-            PosResp_WriteMemoryByAddress = 0x7D,
-            //Stored data transmission
-            PosResp_ClearDiagInfo = 0x54,
-            PosResp_ReadDiagInfo = 0x59,
-            //Input/output control
-            PosResp_InOutControlByIdentifier = 0x6F,
-            //Remote activation of routine
-            PosResp_RoutineControl = 0x71,
-            //Upload and download
-            PosResp_RequestDownload = 0x74,
-            PosResp_RequestUpload = 0x75,
-            PosResp_TransferDat = 0x76,
-            PosResp_RequestTransferExit = 0x77,
-            PosResp_RequestFileTransfer = 0x78,
-            // Negative response
-            NegResp_ = 0x7F
-        }
-        public Sid sid;
-        public enum Nrc
-        {
-            GeneralReject = 0x10,
-            ServiceNotSupported = 0x11,
-            SubfunctionNotSupported = 0x12,
-            IncorrectMessageLength_InvalidFormat = 0x13,
-            BussyRepeatRequest = 0x21,
-            ConditionsNotCorrect = 0x22,
-            RequestSequenceError = 0x24,
-            NoResponseFromSubnetComponent = 0x25,
-            FailurePreventsExecutionOfRequestedAction = 0x26,
-            RequestOutOfRange = 0x31,
-            ScurityAccesDenied = 0x33,
-            InvalidKey = 0x35,
-            ExceedNumberOfAttempts = 0x36,
-            RequiredTimeDelayNotExpired = 0x37,
-            UploadDownloadNotAccepted = 0x70,
-            TransferDataSuspended = 0x71,
-            GeneralProgrammingFailure = 0x72,
-            WrongBlockSequenceCounter = 0x73,
-            ResponsePending = 0x78,
-            SubFunctionNotSupportedInActiveDiagnosticSession = 0x7E,
-            ServiceNotSupportedInActiveDiagnosticSession = 0x7F,
-            RpmTooHigh = 0x81,
-            RpmTooLow = 0x82,
-            EngineIsRunning = 0x83,
-            EngineIsNotRunning = 0x84,
-            EngineRunTimeTooLow = 0x85,
-            TemperatureTooHigh = 0x86,
-            TemperatureTooLow = 0x87,
-            VehicleSpeedTooHigh = 0x88,
-            VehicleSpeedTooLow = 0x89,
-            ThrottlePedalTooHigh = 0x8A,
-            ThrottlePedalTooLow = 0x8B,
-            TransmissionRangeNotInNeutral = 0x8C,
-            TransmissionRangeNotInGear = 0x8D,
-            BreakSwitchNotClosed = 0x8F,
-            ShifterLeverNotInPark = 0x90,
-            TorqueConvertedClutchLocked = 0x91,
-            VoltageTooHigh = 0x92,
-            VoltageTooLow = 0x93,
-            
-        }
+        public Byte sid;
         public int did;
         public byte[] parameters;
         public bool validData;       // frame contain the correct number of bytes for all bytes = true
 
-        public oneDiagServiceInfo(Sid mySID, int myDID, byte[] pars)
+        public oneDiagServiceInfo(Byte mySID, int myDID, byte[] pars)
         {
             sid = mySID;
             did = myDID;
@@ -150,7 +188,7 @@ namespace TPanalyzer
 
     public struct DiagServiceconfig
     {   // template/structure with information about every KWP and UDS service
-        oneDiagServiceInfo.Sid sid;
+        Byte sid;
         int parByteCount;
         string shortName;
         string longName;
@@ -158,7 +196,7 @@ namespace TPanalyzer
         int[] startBits;
         int[] endBits;
 
-        public DiagServiceconfig(oneDiagServiceInfo.Sid newSID, int newParByteCount, string newShortName, string newLongName, string[] newParNames, int[] newStartBits, int[] newEndtBits)
+        public DiagServiceconfig(Byte newSID, int newParByteCount, string newShortName, string newLongName, string[] newParNames, int[] newStartBits, int[] newEndtBits)
         {
             sid = newSID;
             parByteCount = newParByteCount;
@@ -413,7 +451,7 @@ namespace TPanalyzer
                 this.services = new oneDiagServiceInfo[15];
             }
 
-            public void AddService(oneDiagServiceInfo.Sid sid, int did, byte[] pars)
+            public void AddService(Byte sid, int did, byte[] pars)
             {
                 servicesCount++;
                 services[servicesCount] = new oneDiagServiceInfo(sid, did, pars);
@@ -428,8 +466,8 @@ namespace TPanalyzer
 
         public List<DiagServiceconfig> UDSCONFIG = new List<DiagServiceconfig>()
         {
-         //   {new DiagServiceconfig(oneDiagServiceInfo.Sid.ClearDiagInfo, 1, "ClearDiagInfo", "Clear diagnostic information",new string[1] {"GroupOfDTC"}, new int [1] {0}, new int [1] {21})},
-         //   {new DiagServiceconfig(oneDiagServiceInfo.Sid.DiagnosticSessionControl, 2, "DiagSessionControl", "Diagnostic session control",new string[2] {"SPR", "DiagnosticSessionType"}, new int [2] {0,1}, new int [2] {1, 7})}
+         //   {new DiagServiceconfig(Byte.ClearDiagInfo, 1, "ClearDiagInfo", "Clear diagnostic information",new string[1] {"GroupOfDTC"}, new int [1] {0}, new int [1] {21})},
+         //   {new DiagServiceconfig(Byte.DiagnosticSessionControl, 2, "DiagSessionControl", "Diagnostic session control",new string[2] {"SPR", "DiagnosticSessionType"}, new int [2] {0,1}, new int [2] {1, 7})}
         };
            
         // ===========================================================================================================================================================
@@ -448,6 +486,7 @@ namespace TPanalyzer
         private IDListForm idListForm;
         private TxtFileSelector txtSelector;
         public List<isoTPChannelConfig> isoTpIdList = new List<isoTPChannelConfig>();    // list with IDs which are supposed to contain ISO-TP data coding (including alias and UDS/KWP selector) 
+        public string APP_VERSION = "0.0.0.0 - not from instalation"; // not installed
 
 
         public int numOfTraces = -1;                       // information about number of traces loaded - tabindex is set according this var
@@ -459,6 +498,10 @@ namespace TPanalyzer
         public analyzerMainForm()
         {
             InitializeComponent();
+
+            APP_VERSION = (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed) ? System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString() : "0.0.0.0 - not from instalation";
+            this.Text = "Aunex TP analyzer - " + APP_VERSION;
+
             tabControlTraces.TabPages.Clear();
             updateLabelStrip("Load the trace file in 'File' menu.");
             updateProgresBarStrip(0);
@@ -997,7 +1040,7 @@ namespace TPanalyzer
             IsoTpInformation tpInfo = new IsoTpInformation();
             DiagFrameInformation diagFrameInfo = new DiagFrameInformation();
             bool goOnWithParsing = true;
-
+            Byte tempUdsKwpSelector = 0;    //  0 = UDS, 1 = KWP
 
 //            Application.DoEvents();
             if (true)   
@@ -1059,6 +1102,7 @@ namespace TPanalyzer
                                 goOnWithParsing = true;
                                 strAlias = config.alias;
                                 tpInfo = parseISOTPData(id, dataByte, false);         // parse this segment with normal addressing mode
+                                tempUdsKwpSelector = config.udsKwpSelector;
                                 break;
                             }
                             else if ((config.n_AI == id) && (config.n_TA == dataByte[0]) && (config.adressingMode == isoTPChannelConfig.AdressingMode.Extended))
@@ -1066,6 +1110,7 @@ namespace TPanalyzer
                                 goOnWithParsing = true;
                                 strAlias = config.alias;
                                 tpInfo = parseISOTPData(id, dataByte, true);        // parse this segment with extended addressing mode
+                                tempUdsKwpSelector = config.udsKwpSelector;
                                 break;
                             }
                         }
@@ -1096,16 +1141,33 @@ namespace TPanalyzer
                                 }
                                 strIsoTpDetails += string.Format(", DL = {0}", tpInfo.higherLayerDataLength.ToString());
                                 strUdsKwp = strInterface.strData.Substring((tpInfo.byteCount * 5), (5 * (tpInfo.higherLayerDataLength)) - 2);
-                                diagFrameInfo = parseDiagData(tpInfo.higherLayerData);
+                                diagFrameInfo = parseDiagData(tpInfo.higherLayerData,tempUdsKwpSelector);
                                 diagInfoList[activeTabIndex].Add(diagFrameInfo);
-                                strUdsKwpDetails = string.Format("{0}", diagFrameInfo.services[0].sid.ToString());
-                                if (diagFrameInfo.services[0].did != -1)
+                                if (tempUdsKwpSelector == 0)
                                 {
-                                    strUdsKwpDetails += string.Format(", DID = 0x{0}", diagFrameInfo.services[0].did.ToString("X4"));
+                                    strUdsKwpDetails = string.Format("{0}", (UDSSid)diagFrameInfo.services[0].sid);
+                                    if (diagFrameInfo.services[0].did != -1)
+                                    {
+                                        strUdsKwpDetails += string.Format(", DID = 0x{0}", diagFrameInfo.services[0].did.ToString("X4"));
+                                    }
+                                    if (diagFrameInfo.services[0].sid == (Byte)UDSSid.UDS_NegResp_)
+                                    {
+                                        strUdsKwpDetails += string.Format("{0}", (UDSNrc)(diagFrameInfo.services[0].parameters[1]));
+                                    }
                                 }
-                                if (diagFrameInfo.services[0].sid == oneDiagServiceInfo.Sid.NegResp_)
+                                else if (tempUdsKwpSelector == 1)
                                 {
-                                    strUdsKwpDetails += string.Format("{0}", (oneDiagServiceInfo.Nrc)(diagFrameInfo.services[0].parameters[1]));
+                                    strUdsKwpDetails = string.Format("{0}", (KWPSid)diagFrameInfo.services[0].sid);
+                                    if (diagFrameInfo.services[0].did != -1)
+                                    {
+                                        strUdsKwpDetails += string.Format(", DID = 0x{0}", diagFrameInfo.services[0].did.ToString("X4"));
+                                    }
+                                    //TODO: KWP NRCs
+//                                    if (diagFrameInfo.services[0].sid == (Byte)KWPSid.NegResp_)
+//                                    {
+//                                        strUdsKwpDetails += string.Format("{0}", (KWPNrc)(diagFrameInfo.services[0].parameters[1]));
+//                                    }
+
                                 }
 
                             }
@@ -1115,20 +1177,36 @@ namespace TPanalyzer
                                 if (tpInfo.higherLayerData != null) // consecutive frame with higher layer data is the last one = whole frame is finished
                                 {   // last consecutive frame
                                     strUdsKwp = strInterface.strData.Substring((tpInfo.byteCount * 5), (5 * (8 - tpInfo.byteCount)) - 2);
-                                    diagFrameInfo = parseDiagData(tpInfo.higherLayerData);
+                                    diagFrameInfo = parseDiagData(tpInfo.higherLayerData,tempUdsKwpSelector);
                                     diagInfoList[activeTabIndex].Add(diagFrameInfo);
-                                    strUdsKwpDetails = string.Format("{0}", diagFrameInfo.services[0].sid.ToString());
-                                    if (diagFrameInfo.services[0].did != -1)
+                                    if (tempUdsKwpSelector == 0)
                                     {
-                                        strUdsKwpDetails += string.Format(", DID = 0x{0}", diagFrameInfo.services[0].did.ToString("X4"));
-                                    }
+                                        strUdsKwpDetails = string.Format("{0}", (UDSSid)diagFrameInfo.services[0].sid);
+                                        if (diagFrameInfo.services[0].did != -1)
+                                        {
+                                            strUdsKwpDetails += string.Format(", DID = 0x{0}", diagFrameInfo.services[0].did.ToString("X4"));
+                                        }
 
-                                    if (diagFrameInfo.services[0].sid == oneDiagServiceInfo.Sid.NegResp_)
+                                        if (diagFrameInfo.services[0].sid == (Byte)UDSSid.UDS_NegResp_)
+                                        {
+                                            ///TODO: implement reaction for NRC without value in enum type
+                                            strUdsKwpDetails += string.Format("{0}", (UDSNrc)(diagFrameInfo.services[0].parameters[1]));
+                                        }
+                                    }
+                                    else if (tempUdsKwpSelector == 1)
                                     {
-                                        ///TODO: implement reaction for NRC without value in enum type
-                                        strUdsKwpDetails += string.Format("{0}", (oneDiagServiceInfo.Nrc)(diagFrameInfo.services[0].parameters[1]));
-                                    }
+                                        strUdsKwpDetails = string.Format("{0}", (KWPSid)diagFrameInfo.services[0].sid);
+                                        if (diagFrameInfo.services[0].did != -1)
+                                        {
+                                            strUdsKwpDetails += string.Format(", DID = 0x{0}", diagFrameInfo.services[0].did.ToString("X4"));
+                                        }
 
+                                        //if (diagFrameInfo.services[0].sid == (Byte)KWPSid.NegResp_)
+                                        //{
+                                        //    ///TODO: implement reaction for NRC without value in enum type
+                                        //    strUdsKwpDetails += string.Format("{0}", (KWPNrc)(diagFrameInfo.services[0].parameters[1]));
+                                        //}
+                                    }
                                 }
                                 else
                                 {
@@ -1328,344 +1406,363 @@ namespace TPanalyzer
             return result;
         }
 
-        public int getNumberOfDiagParBytes(oneDiagServiceInfo.Sid sid)
+        public int getNumberOfDiagParBytes(Byte sid, Byte udsKwpSelector)
         {
             int result = -1;
 
-            switch (sid)
+            if (udsKwpSelector == 0)    // UDS
             {
-                case (oneDiagServiceInfo.Sid.Rq_AccesTimingParameters):
-                    {
+                switch (sid)
+                {
+                    case ((Byte)UDSSid.UDS_Rq_AccesTimingParameters):
+                        {
                             result = -1;        // not fix number of parameters bytes or parameters count unknown
                             break;
-                    }
-                case (oneDiagServiceInfo.Sid.Rq_ClearDiagInfo):
-                    {
-                        result = 3;        
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.Rq_CommunicationControl):
-                    {
-                        result = 2;       
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.Rq_ControlDTCSettings):
-                    {
-                        result = 4;      
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.Rq_DiagnosticSessionControl):
-                    {
-                        result = 1;
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.Rq_DynamicallyDefineDataIdentifier):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.Rq_ECUReset):
-                    {
-                        result = 1;  
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.Rq_InOutControlByIdentifier):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.Rq_LinkControl):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.NegResp_):
-                    {
-                        result = 2;       
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_AccesTimingParameters):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_ClearDiagInfo):
-                    {
-                        result = 0;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_CommunicationControl):
-                    {
-                        result = 1; 
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_ControlDTCSettings):
-                    {
-                        result = 1;  
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_DiagnosticSessionControl):
-                    {
-                        result = 5;  
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_DynamicallyDefineDataIdentifier):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_ECUReset):
-                    {
-                        result = 1;        
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_InOutControlByIdentifier):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_LinkControl):
-                    {
-                        result = 1;       
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_ReadDataById):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_ReadDataByPeriodicIdentifier):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_ReadDiagInfo):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_ReadMemoryByAddress):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_ReadScalingDataByIdentifier):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_RequestDownload):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_RequestFileTransfer):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_RequestTransferExit):
-                    {
-                        result = 0; 
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_RequestUpload):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_ResponseOnEvent):
-                    {
-                        result = 6;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_RoutineControl):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_SecuredDataTransmission):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_SecurityAcces):
-                    {
-                        result = -1;        // not fix number of parameters bytes in case of seed transfer = 5 and in case of key acknowledge = 1
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_TesterPresent):
-                    {
-                        result = 0;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_TransferDat):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_WriteDataById):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.PosResp_WriteMemoryByAddress):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.Rq_ReadDataById):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.Rq_ReadDataByPeriodicIdentifier):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.Rq_ReadDiagInfo):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.Rq_ReadMemoryByAddress):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.Rq_ReadScalingDataByIdentifier):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.Rq_RequestDownload):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.Rq_RequestFileTransfer):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.Rq_RequestTransferExit):
-                    {
-                        result = 0; 
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.Rq_RequestUpload):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.Rq_ResponseOnEvent):
-                    {
-                        result = 6; 
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.Rq_RoutineControl):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.Rq_SecuredDataTransmission):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.Rq_SecurityAcces):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.Rq_TesterPresent):
-                    {
-                        result = 1; 
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.Rq_TransferDat):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.Rq_WriteDataById):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
-                    }
-                case (oneDiagServiceInfo.Sid.Rq_WriteMemoryByAddress):
-                    {
-                        result = -1;        // not fix number of parameters bytes or parameters count unknown
-                        break;
+                        }
+                    case ((Byte)UDSSid.UDS_Rq_ClearDiagInfo):
+                        {
+                            result = 3;
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_Rq_CommunicationControl):
+                        {
+                            result = 2;
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_Rq_ControlDTCSettings):
+                        {
+                            result = 4;
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_Rq_DiagnosticSessionControl):
+                        {
+                            result = 1;
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_Rq_DynamicallyDefineDataIdentifier):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_Rq_ECUReset):
+                        {
+                            result = 1;
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_Rq_InOutControlByIdentifier):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_Rq_LinkControl):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_NegResp_):
+                        {
+                            result = 2;
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_AccesTimingParameters):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_ClearDiagInfo):
+                        {
+                            result = 0;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_CommunicationControl):
+                        {
+                            result = 1;
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_ControlDTCSettings):
+                        {
+                            result = 1;
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_DiagnosticSessionControl):
+                        {
+                            result = 5;
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_DynamicallyDefineDataIdentifier):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_ECUReset):
+                        {
+                            result = 1;
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_InOutControlByIdentifier):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_LinkControl):
+                        {
+                            result = 1;
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_ReadDataById):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_ReadDataByPeriodicIdentifier):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_ReadDiagInfo):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_ReadMemoryByAddress):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_ReadScalingDataByIdentifier):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_RequestDownload):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_RequestFileTransfer):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_RequestTransferExit):
+                        {
+                            result = 0;
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_RequestUpload):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_ResponseOnEvent):
+                        {
+                            result = 6;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_RoutineControl):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_SecuredDataTransmission):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_SecurityAcces):
+                        {
+                            result = -1;        // not fix number of parameters bytes in case of seed transfer = 5 and in case of key acknowledge = 1
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_TesterPresent):
+                        {
+                            result = 0;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_TransferDat):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_WriteDataById):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_PosResp_WriteMemoryByAddress):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_Rq_ReadDataById):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_Rq_ReadDataByPeriodicIdentifier):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_Rq_ReadDiagInfo):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_Rq_ReadMemoryByAddress):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_Rq_ReadScalingDataByIdentifier):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_Rq_RequestDownload):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_Rq_RequestFileTransfer):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_Rq_RequestTransferExit):
+                        {
+                            result = 0;
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_Rq_RequestUpload):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_Rq_ResponseOnEvent):
+                        {
+                            result = 6;
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_Rq_RoutineControl):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_Rq_SecuredDataTransmission):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_Rq_SecurityAcces):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_Rq_TesterPresent):
+                        {
+                            result = 1;
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_Rq_TransferDat):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_Rq_WriteDataById):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                    case ((Byte)UDSSid.UDS_Rq_WriteMemoryByAddress):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+
+                    default:
+                        {
+                            result = -1;
+                            break;
+                        }
                     }
 
-                default:
-                {
-                        result = -1;
-                        break;
                 }
-            }
+                else if (udsKwpSelector == 1)       // KWP
+                switch (sid)
+                {
+                    case ((Byte)KWPSid.KWP_Rq_ECUReset):
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                        //TODO: fill KWP byte counts
+                    default:
+                        {
+                            result = -1;        // not fix number of parameters bytes or parameters count unknown
+                            break;
+                        }
+                }
 
 
             return result;
         }
 
-        public int getDIDposition(oneDiagServiceInfo.Sid sid)
+        public int getDIDposition(Byte sid, Byte udsKwpSelector)
         {
+            int result = -1;
+            if (udsKwpSelector == 0) // UDS
             {
-                int result = -1;
-
                 switch (sid)
                 {
-                    case (oneDiagServiceInfo.Sid.PosResp_InOutControlByIdentifier):
+                    case ((Byte)UDSSid.UDS_PosResp_InOutControlByIdentifier):
                         {
                             result = 1;
                             break;
                         }
-                    case (oneDiagServiceInfo.Sid.PosResp_ReadDataById):
+                    case ((Byte)UDSSid.UDS_PosResp_ReadDataById):
                         {
                             result = 1;
                             break;
                         }
-                    case (oneDiagServiceInfo.Sid.PosResp_ReadScalingDataByIdentifier):
+                    case ((Byte)UDSSid.UDS_PosResp_ReadScalingDataByIdentifier):
                         {
-                            result = 1;        
+                            result = 1;
                             break;
                         }
-                    case (oneDiagServiceInfo.Sid.PosResp_RoutineControl):
+                    case ((Byte)UDSSid.UDS_PosResp_RoutineControl):
                         {
-                            result = 2;        
+                            result = 2;
                             break;
                         }
-                    case (oneDiagServiceInfo.Sid.PosResp_WriteDataById):
+                    case ((Byte)UDSSid.UDS_PosResp_WriteDataById):
                         {
-                            result = 1;        
+                            result = 1;
                             break;
                         }
-                    case (oneDiagServiceInfo.Sid.Rq_ReadDataById):
+                    case ((Byte)UDSSid.UDS_Rq_ReadDataById):
                         {
-                            result = 1;        
+                            result = 1;
                             break;
                         }
-                    case (oneDiagServiceInfo.Sid.Rq_ReadDataByPeriodicIdentifier):
+                    case ((Byte)UDSSid.UDS_Rq_ReadDataByPeriodicIdentifier):
                         {
-                            result = 1;        
+                            result = 1;
                             break;
                         }
-                    case (oneDiagServiceInfo.Sid.Rq_ReadScalingDataByIdentifier):
+                    case ((Byte)UDSSid.UDS_Rq_ReadScalingDataByIdentifier):
                         {
-                            result = 1;   
+                            result = 1;
                             break;
                         }
-                    case (oneDiagServiceInfo.Sid.Rq_RoutineControl):
+                    case ((Byte)UDSSid.UDS_Rq_RoutineControl):
                         {
-                            result = 1;       
+                            result = 1;
                             break;
                         }
-                    case (oneDiagServiceInfo.Sid.Rq_WriteDataById):
+                    case ((Byte)UDSSid.UDS_Rq_WriteDataById):
                         {
-                            result = 1;      
+                            result = 1;
                             break;
                         }
 
@@ -1675,68 +1772,86 @@ namespace TPanalyzer
                             break;
                         }
                 }
-                return result;
-            }
 
+            }
+            else if (udsKwpSelector == 1) // KWP                
+            {
+                switch (sid)
+                {
+                    case ((Byte)KWPSid.KWP_Rq_ReadDataByLocalIdentifier):
+                        {
+                            result = 1;
+                            break;
+                        }
+                        //TODO: fill KWP DID positions
+                    default:
+                        {
+                            result = -1;
+                            break;
+                        }
+                }
+            }
+            return result;
         }
 
-        public DiagFrameInformation parseDiagData(Byte[] dataToParse)
+        public DiagFrameInformation parseDiagData(Byte[] dataToParse, Byte udsKwpSelector)
         {
             DiagFrameInformation result = new DiagFrameInformation();
             int pointer = 0;
             int tempByteCount = 0;
+            int tempDIDposition = 0;
 
-            tempByteCount = getNumberOfDiagParBytes((oneDiagServiceInfo.Sid)(dataToParse[pointer]));
+                tempByteCount = getNumberOfDiagParBytes((dataToParse[pointer]), udsKwpSelector);
+                tempDIDposition = getDIDposition((dataToParse[pointer]), udsKwpSelector);
 
-            if (tempByteCount == 0)
-            {
-                result.services[result.servicesCount] = new oneDiagServiceInfo((oneDiagServiceInfo.Sid)(dataToParse[pointer]), -1, new byte[0]);//
-                result.services[result.servicesCount].sid = (oneDiagServiceInfo.Sid)(dataToParse[pointer]);
-            }
-
-            else if (tempByteCount == -1)
-            {
-                result.services[result.servicesCount] = new oneDiagServiceInfo((oneDiagServiceInfo.Sid)(dataToParse[pointer]), -1, new byte[(dataToParse.Length - 1)]);
-                result.services[result.servicesCount].sid = (oneDiagServiceInfo.Sid)(dataToParse[pointer]);
-                for (int i = 0; i < (dataToParse.Length-1); i++)
+                if (tempByteCount == 0)
                 {
-                    if ((pointer + 1 + i) <= dataToParse.Length)
-                    {
-                        result.services[result.servicesCount].parameters[i] = dataToParse[pointer + 1 + i];
-                    }
-                    else
-                    {
-                        result.services[result.servicesCount].validData = false;
-                    }
+                    result.services[result.servicesCount] = new oneDiagServiceInfo((dataToParse[pointer]), -1, new byte[0]);//
+                    result.services[result.servicesCount].sid = (dataToParse[pointer]);
                 }
-                pointer += (dataToParse.Length);
-            }
 
-            else if (tempByteCount > 0)
-            {
-                result.services[result.servicesCount] = new oneDiagServiceInfo((oneDiagServiceInfo.Sid)(dataToParse[pointer]), -1, new byte[tempByteCount]);//
-                result.services[result.servicesCount].sid = (oneDiagServiceInfo.Sid)(dataToParse[pointer]);
-                for (int i = 0; i < tempByteCount; i++)
+                else if (tempByteCount == -1)
                 {
-                    if ((pointer + 1 + i) <= dataToParse.Length)
+                    result.services[result.servicesCount] = new oneDiagServiceInfo((dataToParse[pointer]), -1, new byte[(dataToParse.Length - 1)]);
+                    result.services[result.servicesCount].sid = (dataToParse[pointer]);
+                    for (int i = 0; i < (dataToParse.Length - 1); i++)
                     {
-                        result.services[result.servicesCount].parameters[i] = dataToParse[pointer + 1 + i];
+                        if ((pointer + 1 + i) <= dataToParse.Length)
+                        {
+                            result.services[result.servicesCount].parameters[i] = dataToParse[pointer + 1 + i];
+                        }
+                        else
+                        {
+                            result.services[result.servicesCount].validData = false;
+                        }
                     }
-                    else
-                    {
-                        result.services[result.servicesCount].validData = false;
-                    }
+                    pointer += (dataToParse.Length);
                 }
-                pointer += tempByteCount + 1;
-            }
 
-            var tempDIDposition = getDIDposition(result.services[result.servicesCount].sid);
+                else if (tempByteCount > 0)
+                {
+                    result.services[result.servicesCount] = new oneDiagServiceInfo((dataToParse[pointer]), -1, new byte[tempByteCount]);//
+                    result.services[result.servicesCount].sid = (dataToParse[pointer]);
+                    for (int i = 0; i < tempByteCount; i++)
+                    {
+                        if ((pointer + 1 + i) <= dataToParse.Length)
+                        {
+                            result.services[result.servicesCount].parameters[i] = dataToParse[pointer + 1 + i];
+                        }
+                        else
+                        {
+                            result.services[result.servicesCount].validData = false;
+                        }
+                    }
+                    pointer += tempByteCount + 1;
+                }
 
-            if (tempDIDposition != -1)
-            {
-                result.services[result.servicesCount].did = (result.services[result.servicesCount].parameters[tempDIDposition - 1] << 8);
-                result.services[result.servicesCount].did += (result.services[result.servicesCount].parameters[tempDIDposition]);
-            }
+                if (tempDIDposition != -1)
+                {
+                    result.services[result.servicesCount].did = (result.services[result.servicesCount].parameters[tempDIDposition - 1] << 8);
+                    result.services[result.servicesCount].did += (result.services[result.servicesCount].parameters[tempDIDposition]);
+                }
+            
 
             return result;
         }
@@ -1824,14 +1939,14 @@ namespace TPanalyzer
                                 if (diagInfoList[activeTabIndex][rowIndex] != null)
                                 {
                                     result += "UDS / KWP  details:\n";
-                                    result += string.Format("Service = {0} (0x{1}) \n", diagInfoList[activeTabIndex][rowIndex].services[0].sid.ToString(), ((int)(diagInfoList[activeTabIndex][rowIndex].services[0].sid)).ToString("X2"));
+                                    result += string.Format("Service = {0} (0x{1}) \n", (UDSSid)diagInfoList[activeTabIndex][rowIndex].services[0].sid, ((diagInfoList[activeTabIndex][rowIndex].services[0].sid)).ToString("X2"));
                                     if (diagInfoList[activeTabIndex][rowIndex].services[0].did != -1)
                                     {
                                         result += string.Format("DID = 0x{0} \n", diagInfoList[activeTabIndex][rowIndex].services[0].did.ToString("X4"));
                                     }
-                                    if (diagInfoList[activeTabIndex][rowIndex].services[0].sid == oneDiagServiceInfo.Sid.NegResp_)
+                                    if (diagInfoList[activeTabIndex][rowIndex].services[0].sid == (Byte)UDSSid.UDS_NegResp_)
                                     {
-                                        result += string.Format("NRC type = {0} (0x{1}) \n", (oneDiagServiceInfo.Nrc)(diagInfoList[activeTabIndex][rowIndex].services[0].parameters[1]), diagInfoList[activeTabIndex][rowIndex].services[0].parameters[1]);
+                                        result += string.Format("NRC type = {0} (0x{1}) \n", (UDSNrc)(diagInfoList[activeTabIndex][rowIndex].services[0].parameters[1]), diagInfoList[activeTabIndex][rowIndex].services[0].parameters[1]);
                                         ///TODO: implement reaction for NRC without value in enum type
                                     }
                                     result += "\n";

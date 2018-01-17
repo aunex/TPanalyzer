@@ -17,12 +17,12 @@ namespace IDselector
         public int n_AI;
         public int n_TA;
         public string alias;
-        public int udsKwpSelector;      // 0 = UDS, 1 = KWP, 2..X = reserve
+        public Byte udsKwpSelector;      // 0 = UDS, 1 = KWP, 2..X = reserve
         public enum AdressingMode { Normal = 0, NormalFixed = 1, Extended = 2 }
         public AdressingMode adressingMode;
         public bool extendedID;
 
-        public isoTPChannelConfig(int myN_AI, int myN_TA, string myAlias, int myUdsKwpSelector, AdressingMode myAdressMode, bool myExtendedID)
+        public isoTPChannelConfig(int myN_AI, int myN_TA, string myAlias, Byte myUdsKwpSelector, AdressingMode myAdressMode, bool myExtendedID)
         {
             n_AI = myN_AI;
             n_TA = myN_TA;
@@ -65,15 +65,15 @@ namespace IDselector
             tbNAI.Text = string.Format("0x{0} ({1} d)", IDitem.n_AI.ToString("X4"), IDitem.n_AI.ToString());
             tbNTA.Text = IDitem.n_TA.ToString();
             tbAlias.Text = IDitem.alias;
-            cbUdsKwp.SelectedIndex = (int)IDitem.udsKwpSelector;
+            cbUdsKwp.SelectedIndex = (Byte)IDitem.udsKwpSelector;
             if (index % 2 != 0)
             {
                 tableLayoutPanel1.BackColor = Color.Gray;
-                cbMode.BackColor = Color.LightGray;
-                tbNAI.BackColor = Color.LightGray;
-                tbNTA.BackColor = Color.LightGray;
-                tbAlias.BackColor = Color.LightGray;
-                cbUdsKwp.BackColor = Color.LightGray;
+                //cbMode.BackColor = Color.LightGray;
+                //tbNAI.BackColor = Color.LightGray;
+                //tbNTA.BackColor = Color.LightGray;
+                //tbAlias.BackColor = Color.LightGray;
+                //cbUdsKwp.BackColor = Color.LightGray;
             }
         }
 
@@ -90,7 +90,7 @@ namespace IDselector
 
         private void cbUdsKwp_SelectedIndexChanged(object sender, EventArgs e)
         {
-            IDitem.udsKwpSelector = cbUdsKwp.SelectedIndex;
+            IDitem.udsKwpSelector = (Byte)cbUdsKwp.SelectedIndex;
             OnIDSelectorTemp_ItemChanged(e);
 
         }

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(analyzerMainForm));
             this.topMenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnMenuLoadTrace = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,16 +54,16 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tabControlTraces = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.openDialogTrace = new System.Windows.Forms.OpenFileDialog();
+            this.traceTemplate1 = new traceTemplate.TraceTemplate();
             this.cMenuIDHeader = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.hideColumnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showColumnsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.filterSetupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.doubleAnalyzerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.traceTemplate1 = new traceTemplate.TraceTemplate();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.closeTraceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openDialogTrace = new System.Windows.Forms.OpenFileDialog();
             this.topMenuStrip.SuspendLayout();
             this.toolStripBottom.SuspendLayout();
             this.tabControlTraces.SuspendLayout();
@@ -272,9 +273,20 @@
             this.tabPage1.Text = "Trace 1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // openDialogTrace
+            // traceTemplate1
             // 
-            this.openDialogTrace.RestoreDirectory = true;
+            this.traceTemplate1.ContextMenuStrip = this.cMenuIDHeader;
+            this.traceTemplate1.DataMemberBottom = "";
+            this.traceTemplate1.DataMemberTop = "";
+            this.traceTemplate1.DataSourceBottom = null;
+            this.traceTemplate1.DataSourceTop = null;
+            this.traceTemplate1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.traceTemplate1.Location = new System.Drawing.Point(3, 3);
+            this.traceTemplate1.Name = "traceTemplate1";
+            this.traceTemplate1.rtbDetailsBottomText = "";
+            this.traceTemplate1.rtbDetailsTopText = "";
+            this.traceTemplate1.Size = new System.Drawing.Size(1273, 569);
+            this.traceTemplate1.TabIndex = 0;
             // 
             // cMenuIDHeader
             // 
@@ -319,21 +331,6 @@
             this.doubleAnalyzerToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.doubleAnalyzerToolStripMenuItem.Text = "Double analyzer";
             // 
-            // traceTemplate1
-            // 
-            this.traceTemplate1.ContextMenuStrip = this.cMenuIDHeader;
-            this.traceTemplate1.DataMemberBottom = "";
-            this.traceTemplate1.DataMemberTop = "";
-            this.traceTemplate1.DataSourceBottom = null;
-            this.traceTemplate1.DataSourceTop = null;
-            this.traceTemplate1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.traceTemplate1.Location = new System.Drawing.Point(3, 3);
-            this.traceTemplate1.Name = "traceTemplate1";
-            this.traceTemplate1.rtbDetailsBottomText = "";
-            this.traceTemplate1.rtbDetailsTopText = "";
-            this.traceTemplate1.Size = new System.Drawing.Size(1273, 569);
-            this.traceTemplate1.TabIndex = 0;
-            // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
@@ -345,6 +342,10 @@
             this.closeTraceToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.closeTraceToolStripMenuItem.Text = "Close trace";
             // 
+            // openDialogTrace
+            // 
+            this.openDialogTrace.RestoreDirectory = true;
+            // 
             // analyzerMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -353,6 +354,7 @@
             this.Controls.Add(this.tabControlTraces);
             this.Controls.Add(this.toolStripBottom);
             this.Controls.Add(this.topMenuStrip);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.topMenuStrip;
             this.Name = "analyzerMainForm";
             this.Text = "TP analyzer";
