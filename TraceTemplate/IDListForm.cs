@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using IDselector;
+using TPanalyzer;
 using System.Xml.Serialization;
 using System.IO;
 
@@ -34,22 +34,25 @@ namespace TPanalyzer
 
             foreach (isoTPChannelConfig oneConfig in isoTpIdList)
             {
-                IDselectorTemplate newSelectorRow = new IDselectorTemplate(oneConfig, isoTpIdList.IndexOf(oneConfig));  // add the row with IDselector for every ID in the list
+                TPanalyzer.IDselectorTemplate newSelectorRow = new TPanalyzer.IDselectorTemplate(oneConfig, isoTpIdList.IndexOf(oneConfig));  // add the row with IDselector for every ID in the list
                 newSelectorRow.Tag = isoTpIdList.IndexOf(oneConfig);
                 flpSelectorRows.Controls.Add(newSelectorRow);
-                this.Width = newSelectorRow.Width + 25;
+                this.Width = newSelectorRow.Width + 5;
                 newSelectorRow.IDSelectorTemp_DeleteItem += new EventHandler(this.OneIDSelectorTemp_DeleteItem);
                 newSelectorRow.IDSelectorTemp_ItemChanged += new EventHandler(this.OneIDSelectorTemp_ItemChnaged);
+
+                if (this.Height < (110 + (35 + newSelectorRow.Height * isoTpIdList.Count)))
+                {
+                    this.Height = 110 + (35 + newSelectorRow.Height * isoTpIdList.Count);
+                }
+
             }
-            if (this.Height < (105 + (36 * isoTpIdList.Count)))
-            {
-                this.Height = 105 + (36 * isoTpIdList.Count);
-            }
+
         }
 
         private void AddNewID(object sender, EventArgs e)
         {
-            isoTpIdList.Add(new isoTPChannelConfig(0, 0, "Alias_" + (isoTpIdList.Count + 1).ToString(), 0, isoTPChannelConfig.AdressingMode.Normal, false));
+            isoTpIdList.Add(new isoTPChannelConfig(0, 0, 0, 0, 0, 0, 0, "ECU_" + (isoTpIdList.Count + 1).ToString(), 0, isoTPChannelConfig.AdressingMode.Normal, false));
             loadListToTemplates();
         }
 
@@ -85,7 +88,7 @@ namespace TPanalyzer
         private void OneIDSelectorTemp_DeleteItem(object sender, EventArgs e)
         {
             int tempInt = -1;
-            Int32.TryParse((sender as IDselectorTemplate).Tag.ToString(), out tempInt);
+            int.TryParse((sender as TPanalyzer.IDselectorTemplate).Tag.ToString(), out tempInt);
             isoTpIdList.RemoveAt(tempInt);
             loadListToTemplates();
         }
@@ -93,15 +96,15 @@ namespace TPanalyzer
         private void OneIDSelectorTemp_ItemChnaged(object sender, EventArgs e)
         {
             int tempInt = -1;
-            Int32.TryParse((sender as IDselectorTemplate).Tag.ToString(), out tempInt);
+            int.TryParse((sender as TPanalyzer.IDselectorTemplate).Tag.ToString(), out tempInt);
 
             foreach (object myObject in flpSelectorRows.Controls)
             {
-                if (myObject is IDselectorTemplate)
+                if (myObject is TPanalyzer.IDselectorTemplate)
                 {
-                    if ((myObject as IDselectorTemplate).Tag.ToString() == tempInt.ToString())
+                    if ((myObject as TPanalyzer.IDselectorTemplate).Tag.ToString() == tempInt.ToString())
                     {
-                        isoTpIdList[tempInt] = (myObject as IDselectorTemplate).IDitem;
+                        isoTpIdList[tempInt] = (myObject as TPanalyzer.IDselectorTemplate).IDitem;
                     }
                 }
             }
@@ -142,20 +145,29 @@ namespace TPanalyzer
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            isoTpIdList.Add(new isoTPChannelConfig(0, 0, "Alias_" + (isoTpIdList.Count + 1).ToString(), 0, isoTPChannelConfig.AdressingMode.Normal, false));
-            loadListToTemplates();
-        }
-
         private void IDListForm_Resize(object sender, EventArgs e)
         {
-            this.Width = 624;
+            this.Width = 525;
         }
 
         private void IDListForm_ResizeBegin(object sender, EventArgs e)
         {
-            this.Width = 624;
+            this.Width = 525;
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void IDListForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

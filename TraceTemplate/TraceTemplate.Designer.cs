@@ -1,4 +1,4 @@
-﻿namespace traceTemplate
+﻿namespace TPanalyzer
 {
     partial class TraceTemplate
     {
@@ -52,7 +52,7 @@
             this.filterSetupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resetAllFiltersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.CloseTraceBtn = new System.Windows.Forms.ToolStripMenuItem();
             this.rtbDetailsTop = new System.Windows.Forms.RichTextBox();
             this.cMenuRTBoxTop = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.sellectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -157,7 +157,6 @@
             this.dgvTraceTop.Tag = "Top";
             this.dgvTraceTop.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvTraceTop_CellFormatting);
             this.dgvTraceTop.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTraceTop_CellMouseEnter);
-            this.dgvTraceTop.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvTraceTop_DataBindingComplete);
             this.dgvTraceTop.SelectionChanged += new System.EventHandler(this.dgvTraceTop_SelectionChanged);
             this.dgvTraceTop.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvTraceTop_MouseClick);
             // 
@@ -170,7 +169,7 @@
             this.filterSetupToolStripMenuItem,
             this.resetAllFiltersToolStripMenuItem,
             this.toolStripSeparator2,
-            this.toolStripMenuItem3});
+            this.CloseTraceBtn});
             this.cMenuIDHeader.Name = "cMenuIDHeader";
             this.cMenuIDHeader.Size = new System.Drawing.Size(166, 126);
             // 
@@ -290,11 +289,12 @@
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(162, 6);
             // 
-            // toolStripMenuItem3
+            // CloseTraceBtn
             // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(165, 22);
-            this.toolStripMenuItem3.Text = "Close trace";
+            this.CloseTraceBtn.Name = "CloseTraceBtn";
+            this.CloseTraceBtn.Size = new System.Drawing.Size(165, 22);
+            this.CloseTraceBtn.Text = "Close trace";
+            this.CloseTraceBtn.Click += new System.EventHandler(this.CloseTraceBtn_Click);
             // 
             // rtbDetailsTop
             // 
@@ -380,8 +380,8 @@
             this.dgvTraceBottom.Size = new System.Drawing.Size(560, 297);
             this.dgvTraceBottom.TabIndex = 1;
             this.dgvTraceBottom.Tag = "Bottom";
+            this.dgvTraceBottom.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvTraceBottom_CellFormatting);
             this.dgvTraceBottom.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTraceBottom_CellMouseEnter);
-            this.dgvTraceBottom.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvTraceBottom_DataBindingComplete);
             this.dgvTraceBottom.SelectionChanged += new System.EventHandler(this.dgvTraceBottom_SelectionChanged);
             this.dgvTraceBottom.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvTraceBottom_MouseClick);
             // 
@@ -482,6 +482,6 @@
         private System.Windows.Forms.ContextMenuStrip cMenuRTBoxBottom;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem CloseTraceBtn;
     }
 }

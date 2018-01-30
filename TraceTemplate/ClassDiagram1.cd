@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="TPanalyzer.TraceTemplate" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>yiEW27tE8SycBKAKEZOQ7UpD9QucUnzFEUDv7tRVoDo=</HashCode>
+      <FileName>TraceTemplate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="TPanalyzer.oneDiagServiceInfo" Collapsed="true">
+    <Position X="2.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAQAAAAAAAAAAAAAAAAAAAAAAAKAAAA=</HashCode>
+      <FileName>TraceTemplate.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="TPanalyzer.DiagServiceconfig" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAgAgQBAAAAAAAAAAAAAAAAAACAAAAAAEA=</HashCode>
+      <FileName>TraceTemplate.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="TPanalyzer.stringTraceInterface" Collapsed="true">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIBCABAAAAAIAAAAAAAAAAAAACAAAQAABAAAAAAAAAA=</HashCode>
+      <FileName>TraceTemplate.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="TPanalyzer.UDSSid" Collapsed="true">
+    <Position X="2.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIhpgSSgNCg4QQgAEABoUQAACIAJIAAMAhEkwAA4YAQ=</HashCode>
+      <FileName>TraceTemplate.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="TPanalyzer.UDSNrc" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BIBCAgFUIAIGRgggAAECQAEAQAgwICCAyAAAKCAAACQ=</HashCode>
+      <FileName>TraceTemplate.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="TPanalyzer.KWPSid" Collapsed="true">
+    <Position X="2.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AYAIkDAAAAAEBoAhEQAAAAQAAAEgAMDACBEAAVQABAE=</HashCode>
+      <FileName>TraceTemplate.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="TPanalyzer.KWPNrc" Collapsed="true">
+    <Position X="0.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TraceTemplate.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
