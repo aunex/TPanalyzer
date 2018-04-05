@@ -20,6 +20,9 @@ namespace TPanalyzer
         public int Rsp_n_TA;
         public int FRq_n_AI;
         public int FRq_n_TA;
+        public string rqMessageName;
+        public string respMessageName;
+        public string frqMessageName;
         public string alias;
         public int channel;
         public Byte udsKwpSelector;      // 0 = UDS, 1 = KWP, 2..X = reserve
@@ -27,7 +30,7 @@ namespace TPanalyzer
         public AdressingMode adressingMode;
         public bool extendedID;
 
-        public isoTPChannelConfig(int myRq_N_AI, int myRq_N_TA, int myRsp_N_AI, int myRsp_N_TA, int myFRq_N_AI, int myFRq_N_TA, int myChannel, string myAlias, Byte myUdsKwpSelector, AdressingMode myAdressMode, bool myExtendedID)
+        public isoTPChannelConfig(int myRq_N_AI, int myRq_N_TA, int myRsp_N_AI, int myRsp_N_TA, int myFRq_N_AI, int myFRq_N_TA, int myChannel, string myRqMessageName, string myRespMessageName, string myFrqMessageName, string myAlias, Byte myUdsKwpSelector, AdressingMode myAdressMode, bool myExtendedID)
         {
             Rq_n_AI = myRq_N_AI;
             Rq_n_TA = myRq_N_TA;
@@ -35,6 +38,9 @@ namespace TPanalyzer
             Rsp_n_TA = myRsp_N_TA;
             FRq_n_AI = myFRq_N_AI;
             FRq_n_TA = myFRq_N_TA;
+            rqMessageName = myRqMessageName;
+            respMessageName = myRespMessageName;
+            frqMessageName = myFrqMessageName;
             channel = myChannel;
             alias = myAlias;
             udsKwpSelector = myUdsKwpSelector;
@@ -79,6 +85,9 @@ namespace TPanalyzer
             tbFRq_N_AI.Text = string.Format("0x{0} ({1} d)", IDitem.FRq_n_AI.ToString("X4"), IDitem.FRq_n_AI.ToString());
             tbFRq_N_TA.Text = IDitem.FRq_n_TA.ToString();
             tbAlias.Text = IDitem.alias;
+            tbMessageRequest.Text = IDitem.rqMessageName;
+            tbMessageResponse.Text = IDitem.respMessageName;
+            tbMessageFRequest.Text = IDitem.frqMessageName;
             cbUdsKwp.SelectedIndex = (Byte)IDitem.udsKwpSelector;
             cbChannel.SelectedIndex = IDitem.channel;
             if (index % 2 != 0)
@@ -200,5 +209,22 @@ namespace TPanalyzer
             OnIDSelectorTemp_ItemChanged(e);
         }
 
+        private void tbMessageRequest_Leave(object sender, EventArgs e)
+        {
+            IDitem.rqMessageName = tbMessageRequest.Text;
+            OnIDSelectorTemp_ItemChanged(e);
+        }
+
+        private void tbMessageResponse_Leave(object sender, EventArgs e)
+        {
+            IDitem.respMessageName = tbMessageResponse.Text;
+            OnIDSelectorTemp_ItemChanged(e);
+        }
+
+        private void tbMessageFRequest_Leave(object sender, EventArgs e)
+        {
+            IDitem.frqMessageName = tbMessageFRequest.Text;
+            OnIDSelectorTemp_ItemChanged(e);
+        }
     }
 }

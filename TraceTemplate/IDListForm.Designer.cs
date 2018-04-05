@@ -169,7 +169,6 @@
             this.label5.TabIndex = 3;
             this.label5.Text = "Diag. protocol";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // label3
             // 
@@ -180,7 +179,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(110, 24);
             this.label3.TabIndex = 0;
-            this.label3.Text = "Alias";
+            this.label3.Text = "ECU";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label1
@@ -194,7 +193,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Adressing";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 
@@ -232,7 +230,7 @@
             this.HelpButton = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "IDListForm";
-            this.Text = "Diagnostic configuration";
+            this.Text = "Diagnostic configurations";
             this.Load += new System.EventHandler(this.IDListForm_Load);
             this.ResizeBegin += new System.EventHandler(this.IDListForm_ResizeBegin);
             this.Resize += new System.EventHandler(this.IDListForm_Resize);

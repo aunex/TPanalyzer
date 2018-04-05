@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Threading;
@@ -22,16 +23,17 @@ namespace TPanalyzer
     {
         public List<DiagServiceconfig> UDSCONFIG = new List<DiagServiceconfig>()
         {
-         //   {new DiagServiceconfig(Byte.ClearDiagInfo, 1, "ClearDiagInfo", "Clear diagnostic information",new string[1] {"GroupOfDTC"}, new int [1] {0}, new int [1] {21})},
-         //   {new DiagServiceconfig(Byte.DiagnosticSessionControl, 2, "DiagSessionControl", "Diagnostic session control",new string[2] {"SPR", "DiagnosticSessionType"}, new int [2] {0,1}, new int [2] {1, 7})}
+            //   {new DiagServiceconfig(Byte.ClearDiagInfo, 1, "ClearDiagInfo", "Clear diagnostic information",new string[1] {"GroupOfDTC"}, new int [1] {0}, new int [1] {21})},
+            //   {new DiagServiceconfig(Byte.DiagnosticSessionControl, 2, "DiagSessionControl", "Diagnostic session control",new string[2] {"SPR", "DiagnosticSessionType"}, new int [2] {0,1}, new int [2] {1, 7})}
         };
-           
+
         // ===========================================================================================================================================================
 
         private const int MAXCOUNTOFTABS = 10;
         private TPanalyzer.TraceTemplate[] traceTemplates = new TPanalyzer.TraceTemplate[MAXCOUNTOFTABS];             // trace template array - main visual component on working tab - dynamically created for every new tab
         private IDListForm idListForm;
-        private TxtFileSelector txtSelector;
+        private TxtFileSelector txtSelector; 
+
         public List<isoTPChannelConfig> isoTpIdList = new List<isoTPChannelConfig>();    // list with IDs which are supposed to contain ISO-TP data coding (including alias and UDS/KWP selector) 
         public string APP_VERSION = "0.0.0.0 - not from instalation"; // not installed
 
@@ -47,20 +49,19 @@ namespace TPanalyzer
             this.Text = "Aunex TP analyzer - " + APP_VERSION;
 
             tabControlTraces.TabPages.Clear();
+            prepareFileMenu();
+            idListForm = new IDListForm(new List<isoTPChannelConfig>());
+            idListForm.ReimportRecentConfig();  // try to load last diagnostic configuration
+            isoTpIdList = idListForm.isoTpIdList;   // refresh the list after reimport
 
         }
 
-        private void loadTraceFile(bool newTab)
+        private void loadTraceFile(string filename)
         {
-
-            DialogResult result = new DialogResult();
             bool fileFormatIsClear = true;
+            string fileExtension = Path.GetExtension(filename);
 
-            result = openDialogTrace.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                string fileExtension = Path.GetExtension(openDialogTrace.FileName);
-                if (fileExtension == ".txt")
+            if (fileExtension == ".txt")
                 {
                     fileFormatIsClear = false;
                     txtSelector = new TxtFileSelector();
@@ -88,27 +89,50 @@ namespace TPanalyzer
 
                 if ((fileFormatIsClear == true))
                 {
-                    if (newTab)
-                    {
-                        numOfTraces++;
-                        activeTabIndex = numOfTraces;
-                    }
-                    var logFile = File.ReadAllLines(openDialogTrace.FileName);
+                    numOfTraces++;
+                    activeTabIndex = numOfTraces;
 
-                    if (newTab)
-                    {
-                        newTrace(openDialogTrace.SafeFileName, numOfTraces);
-                    }
+                    var logFile = File.ReadAllLines(filename);
 
+                    newTrace(filename, numOfTraces);
+                    setNewFilepathHistory(filename);
                     traceTemplates[activeTabIndex].isoTpIdList = isoTpIdList;
                     traceTemplates[activeTabIndex].logList = new List<string>();
                     traceTemplates[activeTabIndex].logList.Add(fileExtension);
                     traceTemplates[activeTabIndex].logList.AddRange(logFile.ToList<String>());
-
                     traceTemplates[activeTabIndex].startReadingTrace();
 
                 }
+        }
+
+        private void setNewFilepathHistory(string filepath)
+        {
+            SetSetting("Filepath_5", GetSetting("Filepath_4"));
+            SetSetting("Filepath_4", GetSetting("Filepath_3"));
+            SetSetting("Filepath_3", GetSetting("Filepath_2"));
+            SetSetting("Filepath_2", GetSetting("Filepath_1"));
+            SetSetting("Filepath_1", filepath);
+            prepareFileMenu();  // recreate file menu in order to update recent files ....
+        }
+
+        private static string GetSetting(string key)
+        {
+            return ConfigurationManager.AppSettings[key];
+        }
+
+        private static void SetSetting(string key, string value)
+        {
+            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            if (config.AppSettings.Settings[key] == null)
+            {
+                config.AppSettings.Settings.Add(key, value);
             }
+            else
+            {
+                config.AppSettings.Settings[key].Value = value;
+            }
+            config.Save(ConfigurationSaveMode.Full, true);
+            ConfigurationManager.RefreshSection("appSettings");
         }
 
         private void newTrace(string tabName, int number)
@@ -145,6 +169,37 @@ namespace TPanalyzer
 
         #region UI related methods
 
+        private void prepareFileMenu()
+        {
+            fileToolStripMenuItem.DropDownItems.Clear();
+            fileToolStripMenuItem.DropDownItems.Add("Load new trace", null, btnMenuLoadTrace_Click);
+            fileToolStripMenuItem.DropDownItems.Add(new ToolStripSeparator());
+
+            if (GetSetting("Filepath_1") != "")
+            {
+                fileToolStripMenuItem.DropDownItems.Add(GetSetting("Filepath_1"), null, RecentFile1_ClickHandler);
+                if (GetSetting("Filepath_2") != "")
+                {
+                    fileToolStripMenuItem.DropDownItems.Add(GetSetting("Filepath_2"), null, RecentFile1_ClickHandler);
+                    if (GetSetting("Filepath_3") != "")
+                    {
+                        fileToolStripMenuItem.DropDownItems.Add(GetSetting("Filepath_3"), null, RecentFile1_ClickHandler);
+                        if (GetSetting("Filepath_4") != "")
+                        {
+                            fileToolStripMenuItem.DropDownItems.Add(GetSetting("Filepath_4"), null, RecentFile1_ClickHandler);
+                            if (GetSetting("Filepath_5") != "")
+                            {
+                                fileToolStripMenuItem.DropDownItems.Add(GetSetting("Filepath_5"), null, RecentFile1_ClickHandler);
+                            }
+                        }
+                    }
+                }
+            }
+            fileToolStripMenuItem.DropDownItems.Add(new ToolStripSeparator());
+            fileToolStripMenuItem.DropDownItems.Add("Exit", null, exitToolStripMenuItem_Click);
+
+        }
+
         private void TraceCloseRequested(object sender, EventArgs e)
         {
             tabControlTraces.TabPages.RemoveAt(activeTabIndex);
@@ -153,7 +208,12 @@ namespace TPanalyzer
         
         private void btnMenuLoadTrace_Click(object sender, EventArgs e)
         {
-            loadTraceFile(true);
+            DialogResult result = new DialogResult();
+            result = openDialogTrace.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                loadTraceFile(openDialogTrace.FileName);
+            }
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -161,7 +221,6 @@ namespace TPanalyzer
             
             Application.Exit();
         }
-
 
         private void splitTraceWindowToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -195,7 +254,6 @@ namespace TPanalyzer
 
         private void iDListToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            idListForm = new IDListForm(new List<isoTPChannelConfig>());
             DialogResult myResult = idListForm.ShowDialog(isoTpIdList);
             if (myResult == DialogResult.OK)
             {
@@ -209,6 +267,31 @@ namespace TPanalyzer
                     }
                 }
             }
+        }
+
+        private void RecentFile1_ClickHandler(object sender, EventArgs e)
+        {
+            loadTraceFile(GetSetting("Filepath_1"));
+        }
+
+        private void RecentFile2_ClickHandler(object sender, EventArgs e)
+        {
+            loadTraceFile(GetSetting("Filepath_2"));
+        }
+
+        private void RecentFile3_ClickHandler(object sender, EventArgs e)
+        {
+            loadTraceFile(GetSetting("Filepath_3"));
+        }
+
+        private void RecentFile4_ClickHandler(object sender, EventArgs e)
+        {
+            loadTraceFile(GetSetting("Filepath_4"));
+        }
+
+        private void RecentFile5_ClickHandler(object sender, EventArgs e)
+        {
+            loadTraceFile(GetSetting("Filepath_5"));
         }
 
         #endregion

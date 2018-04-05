@@ -40,8 +40,8 @@
             // 
             this.cbFormatSelection.FormattingEnabled = true;
             this.cbFormatSelection.Items.AddRange(new object[] {
-            "Clif datalogger",
-            "TPCAdiag logger"});
+            "CLIF",
+            "TPCAdiag"});
             this.cbFormatSelection.Location = new System.Drawing.Point(108, 48);
             this.cbFormatSelection.Name = "cbFormatSelection";
             this.cbFormatSelection.Size = new System.Drawing.Size(234, 21);
@@ -72,7 +72,7 @@
             this.btnCancel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnCancel.Location = new System.Drawing.Point(144, 3);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(136, 40);
+            this.btnCancel.Size = new System.Drawing.Size(137, 40);
             this.btnCancel.TabIndex = 2;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -81,9 +81,9 @@
             // btnOK
             // 
             this.btnOK.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnOK.Location = new System.Drawing.Point(286, 3);
+            this.btnOK.Location = new System.Drawing.Point(287, 3);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(140, 40);
+            this.btnOK.Size = new System.Drawing.Size(139, 40);
             this.btnOK.TabIndex = 3;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
@@ -101,7 +101,7 @@
     "ectly.";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // txtFileSelector
+            // TxtFileSelector
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -111,7 +111,7 @@
             this.Controls.Add(this.cbFormatSelection);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "txtFileSelector";
+            this.Name = "TxtFileSelector";
             this.ShowIcon = false;
             this.Text = "Select the file format ...";
             this.tableLayoutPanel1.ResumeLayout(false);

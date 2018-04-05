@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TPanalyzer;
 using System.Xml.Serialization;
 using System.IO;
+using System.Configuration;
 
 namespace TPanalyzer
 {
@@ -26,6 +26,26 @@ namespace TPanalyzer
             isoTpIdList = initialList;
 
             loadListToTemplates();
+        }
+
+        public void ReimportRecentConfig()
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(List<isoTPChannelConfig>));
+            if ((GetSetting("RecentDiagConfig") != "") && (GetSetting("RecentDiagConfig") != null))
+            {
+                try
+                {
+                    using (FileStream stream = File.OpenRead(GetSetting("RecentDiagConfig")))
+                    {
+
+                        isoTpIdList = (List<isoTPChannelConfig>)serializer.Deserialize(stream);
+                        loadListToTemplates();
+                    }
+                }
+                catch (Exception ex)
+                {
+                }
+            }
         }
 
         private void loadListToTemplates()
@@ -52,7 +72,7 @@ namespace TPanalyzer
 
         private void AddNewID(object sender, EventArgs e)
         {
-            isoTpIdList.Add(new isoTPChannelConfig(0, 0, 0, 0, 0, 0, 0, "ECU_" + (isoTpIdList.Count + 1).ToString(), 0, isoTPChannelConfig.AdressingMode.Normal, false));
+            isoTpIdList.Add(new isoTPChannelConfig(0, 0, 0, 0, 0, 0, 0,"","","","ECU_" + (isoTpIdList.Count + 1).ToString(), 0, isoTPChannelConfig.AdressingMode.Normal, false));
             loadListToTemplates();
         }
 
@@ -121,6 +141,7 @@ namespace TPanalyzer
                 TextWriter FileStream = new StreamWriter(sdExport.FileName);
                 serializer.Serialize(FileStream, isoTpIdList);
                 FileStream.Close();
+                SetSetting("RecentDiagConfig", sdExport.FileName);
             }
         }
 
@@ -142,6 +163,7 @@ namespace TPanalyzer
                         MessageBox.Show(ex.Message);
                     }
                 }
+                SetSetting("RecentDiagConfig", odImport.FileName);
             }
         }
 
@@ -155,19 +177,29 @@ namespace TPanalyzer
             this.Width = 525;
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void IDListForm_Load(object sender, EventArgs e)
         {
 
         }
 
-        private void label5_Click(object sender, EventArgs e)
+        private static string GetSetting(string key)
         {
+            return ConfigurationManager.AppSettings[key];
+        }
 
+        private static void SetSetting(string key, string value)
+        {
+            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            if (config.AppSettings.Settings[key] == null)
+            {
+                config.AppSettings.Settings.Add(key, value);
+            }
+            else
+            {
+                config.AppSettings.Settings[key].Value = value;
+            }
+            config.Save(ConfigurationSaveMode.Full, true);
+            ConfigurationManager.RefreshSection("appSettings");
         }
     }
 }

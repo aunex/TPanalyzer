@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TPanalyzer;
 
 
 namespace TPanalyzer
@@ -456,7 +455,8 @@ namespace TPanalyzer
         private string typeFilter = "Type";
         private string channelFilter = "Channel";
         private string idFilter = "ID";
-        private string aliasFilter = "Alias";
+        private string messageNameFilter = "Message";
+        private string aliasFilter = "ECU";
         private string directionFilter = "Direction";
         private string dlcFilter = "DLC";
         private string dataFilter = "CAN_Data";
@@ -560,7 +560,7 @@ namespace TPanalyzer
                 result.frameType = (IsoTpInformation.FrameType)((dataToParse[1] & 0xF0) >> 4);
                 switch (result.frameType)
                 {
-                    case IsoTpInformation.FrameType.Single: // single frame - 1B of isotp information = high nibble frame type information and low nibble data count
+                    case IsoTpInformation.FrameType.Single: // single frame - 2B of isotp information = high nibble frame type information and low nibble data count
                         {
                             result.byteCount = 2;
                             result.higherLayerDataLength = (dataToParse[1] & 0x0F);    // low half of first byte
@@ -575,7 +575,7 @@ namespace TPanalyzer
                         {
                             result.byteCount = 3;
                             result.higherLayerDataLength = dataToParse[2] + (256 * (dataToParse[1] & 0x0F));
-                            byte[] tempArray = new byte[6];
+                            byte[] tempArray = new byte[5];
                             for (int i = 0; i < (8 - result.byteCount); i++)
                             {
                                 tempArray[i] = dataToParse[i + result.byteCount];
@@ -584,10 +584,10 @@ namespace TPanalyzer
                             result.higherLayerData = null;
                             break;
                         }
-                    case IsoTpInformation.FrameType.Consecutive: // consecutive frame - 1B of isotp information = 
+                    case IsoTpInformation.FrameType.Consecutive: // consecutive frame - 2B of isotp information = 
                         {
                             result.byteCount = 2;
-                            byte[] tempArray = new byte[7];
+                            byte[] tempArray = new byte[6];
                             for (int i = 0; i < (8 - result.byteCount); i++)
                             {
                                 tempArray[i] = dataToParse[i + result.byteCount];
@@ -599,11 +599,11 @@ namespace TPanalyzer
                             }
                             result.n_AI = canID;
                             result.frameType = IsoTpInformation.FrameType.Consecutive;
-                            result.byteCount = 1;
                             result.consIndex = (dataToParse[0] & 0x0F);
+                            result.byteCount = 2;
                             break;
                         }
-                    case IsoTpInformation.FrameType.Flowcontrol: // flowcontrol frame - 3B of isotp information = 
+                    case IsoTpInformation.FrameType.Flowcontrol: // flowcontrol frame - 4B of isotp information = 
                         {
                             result.byteCount = 4;
                             result.fcFlag = (IsoTpInformation.FcFlag)(dataToParse[0] & 0x0F);
@@ -1111,18 +1111,25 @@ namespace TPanalyzer
             {
                 result.services[result.servicesCount] = new oneDiagServiceInfo((dataToParse[pointer]), -1, new byte[tempByteCount]);//
                 result.services[result.servicesCount].sid = (dataToParse[pointer]);
-                for (int i = 0; i < tempByteCount; i++)
+                try
                 {
-                    if ((pointer + 1 + i) <= dataToParse.Length)
+                    for (int i = 0; i < tempByteCount; i++)
                     {
-                        result.services[result.servicesCount].parameters[i] = dataToParse[pointer + 1 + i];
+                        if ((pointer + 1 + i) <= dataToParse.Length)
+                        {
+                            result.services[result.servicesCount].parameters[i] = dataToParse[pointer + 1 + i];
+                        }
+                        else
+                        {
+                            result.services[result.servicesCount].validData = false;
+                        }
                     }
-                    else
-                    {
-                        result.services[result.servicesCount].validData = false;
-                    }
+                    pointer += tempByteCount + 1;
                 }
-                pointer += tempByteCount + 1;
+                catch
+                {
+                    result.servicesCount = -1;      // Exception during parsing - e.g. not enough data for such a service
+                }
             }
 
             if (tempDIDposition != -1)
@@ -1155,8 +1162,8 @@ namespace TPanalyzer
             dtTracesA.Columns.Add("Timestamp", typeof(float));
             dtTracesA.Columns.Add("Type", typeof(string));
             dtTracesA.Columns.Add("Channel", typeof(string));
+            dtTracesA.Columns.Add("Message", typeof(string));
             dtTracesA.Columns.Add("ID", typeof(string));
-            dtTracesA.Columns.Add("Alias", typeof(string));
             dtTracesA.Columns.Add("Direction", typeof(string));
             dtTracesA.Columns.Add("DLC", typeof(int));
             dtTracesA.Columns.Add("CAN_Data", typeof(string));
@@ -1165,13 +1172,14 @@ namespace TPanalyzer
             dtTracesA.Columns.Add("UDS/KWP_Data", typeof(string));
             dtTracesA.Columns.Add("UDS/KWP_Details", typeof(string));
             dtTracesA.Columns.Add("Others", typeof(string));
+            dtTracesA.Columns.Add("ECU", typeof(string));
 
             dtTracesB = new DataTable();
             dtTracesB.Columns.Add("Timestamp", typeof(float));
             dtTracesB.Columns.Add("Type", typeof(string));
             dtTracesB.Columns.Add("Channel", typeof(string));
+            dtTracesB.Columns.Add("Message", typeof(string));
             dtTracesB.Columns.Add("ID", typeof(string));
-            dtTracesB.Columns.Add("Alias", typeof(string));
             dtTracesB.Columns.Add("Direction", typeof(string));
             dtTracesB.Columns.Add("DLC", typeof(int));
             dtTracesB.Columns.Add("CAN_Data", typeof(string));
@@ -1180,7 +1188,7 @@ namespace TPanalyzer
             dtTracesB.Columns.Add("UDS/KWP_Data", typeof(string));
             dtTracesB.Columns.Add("UDS/KWP_Details", typeof(string));
             dtTracesB.Columns.Add("Others", typeof(string));
-
+            dtTracesB.Columns.Add("ECU", typeof(string));
 
         }
 
@@ -1509,6 +1517,7 @@ namespace TPanalyzer
             string strUdsKwp = "";
             string strUdsKwpDetails = "";
             string strAlias = "";
+            string strMessageName = "";
             int dlc = 0;
             int id = 0;
             int channel = 0;
@@ -1582,40 +1591,55 @@ namespace TPanalyzer
                         goOnWithParsing = false;
                         foreach (isoTPChannelConfig config in isoTpIdList)  // try to find out, whether this N_AI matches with any item in isotp ID list
                         {
-                            if ((config.channel == channel) || (config.channel == 0))
+                            if ((config.channel == channel) || (config.channel == 0)) // channel = 0 means all channels
                             {
                                 if (config.adressingMode != isoTPChannelConfig.AdressingMode.Extended)
                                 {
                                     if (((config.FRq_n_AI == id) || (config.Rq_n_AI == id) || (config.Rsp_n_AI == id)))
                                     {
-                                        goOnWithParsing = true;
                                         strAlias = config.alias;
                                         tpInfo = parseISOTPData(id, dataByte, false);         // parse this segment with normal addressing mode
+                                        goOnWithParsing = true;
                                         tempUdsKwpSelector = config.udsKwpSelector;
+                                        if (config.FRq_n_AI == id)
+                                        {
+                                            strMessageName = config.frqMessageName;
+                                        }
+                                        else if (config.Rq_n_AI == id)
+                                        {
+                                            strMessageName = config.rqMessageName;
+                                        }
+                                        else if (config.Rsp_n_AI == id)
+                                        {
+                                            strMessageName = config.respMessageName;
+                                        }
                                         break;
                                     }
                                 }
                                 else if ((config.FRq_n_AI == id) && (config.FRq_n_TA == dataByte[0]))    // with extended mode both parts of adress must agree (nAI and nTA)
                                 {
-                                    goOnWithParsing = true;
                                     strAlias = config.alias;
+                                    strMessageName = config.frqMessageName;
                                     tpInfo = parseISOTPData(id, dataByte, true);        // parse this segment with extended addressing mode
+                                    goOnWithParsing = true;
                                     tempUdsKwpSelector = config.udsKwpSelector;
                                     break;
                                 }
                                 else if ((config.Rq_n_AI == id) && (config.Rq_n_TA == dataByte[0]))  // with extended mode both parts of adress must agree (nAI and nTA)
                                 {
-                                    goOnWithParsing = true;
                                     strAlias = config.alias;
+                                    strMessageName = config.rqMessageName;
                                     tpInfo = parseISOTPData(id, dataByte, true);        // parse this segment with extended addressing mode
+                                    goOnWithParsing = true;
                                     tempUdsKwpSelector = config.udsKwpSelector;
                                     break;
                                 }
                                 else if ((config.Rsp_n_AI == id) && (config.Rsp_n_TA == dataByte[0]))  // with extended mode both parts of adress must agree (nAI and nTA)
                                 {
-                                    goOnWithParsing = true;
                                     strAlias = config.alias;
+                                    strMessageName = config.respMessageName;
                                     tpInfo = parseISOTPData(id, dataByte, true);        // parse this segment with extended addressing mode
+                                    goOnWithParsing = true;
                                     tempUdsKwpSelector = config.udsKwpSelector;
                                     break;
                                 }
@@ -1648,42 +1672,8 @@ namespace TPanalyzer
                                 }
                                 strIsoTpDetails += string.Format(", DL = {0}", tpInfo.higherLayerDataLength.ToString());
                                 strUdsKwp = strInterface.strData.Substring((tpInfo.byteCount * 3), (3 * (tpInfo.higherLayerDataLength)));
-                                diagFrameInfo = parseDiagData(tpInfo.higherLayerData, tempUdsKwpSelector);
-                                diagInfoList.Add(diagFrameInfo);
-                                if (tempUdsKwpSelector == 0)
+                                if (tpInfo.higherLayerDataLength > 0)
                                 {
-                                    strUdsKwpDetails = string.Format("{0}", (UDSSid)diagFrameInfo.services[0].sid);
-                                    if (diagFrameInfo.services[0].did != -1)
-                                    {
-                                        strUdsKwpDetails += string.Format(", DID = 0x{0}", diagFrameInfo.services[0].did.ToString("X4"));
-                                    }
-                                    if (diagFrameInfo.services[0].sid == (Byte)UDSSid.UDS_NegResp_)
-                                    {
-                                        strUdsKwpDetails += string.Format("{0}", (UDSNrc)(diagFrameInfo.services[0].parameters[1]));
-                                    }
-                                }
-                                else if (tempUdsKwpSelector == 1)
-                                {
-                                    strUdsKwpDetails = string.Format("{0}", (KWPSid)diagFrameInfo.services[0].sid);
-                                    if (diagFrameInfo.services[0].did != -1)
-                                    {
-                                        strUdsKwpDetails += string.Format(", DID = 0x{0}", diagFrameInfo.services[0].did.ToString("X4"));
-                                    }
-                                    //TODO: KWP NRCs
-                                    //                                    if (diagFrameInfo.services[0].sid == (Byte)KWPSid.NegResp_)
-                                    //                                    {
-                                    //                                        strUdsKwpDetails += string.Format("{0}", (KWPNrc)(diagFrameInfo.services[0].parameters[1]));
-                                    //                                    }
-
-                                }
-
-                            }
-                            else if (tpInfo.frameType == IsoTpInformation.FrameType.Consecutive)
-                            {
-                                strIsoTpDetails = string.Format("CF, Index = {0}", tpInfo.consIndex.ToString());
-                                if (tpInfo.higherLayerData != null) // consecutive frame with higher layer data is the last one = whole frame is finished
-                                {   // last consecutive frame
-                                    strUdsKwp = strInterface.strData.Substring((tpInfo.byteCount * 3), (3 * (8 - tpInfo.byteCount)));
                                     diagFrameInfo = parseDiagData(tpInfo.higherLayerData, tempUdsKwpSelector);
                                     diagInfoList.Add(diagFrameInfo);
                                     if (tempUdsKwpSelector == 0)
@@ -1693,11 +1683,13 @@ namespace TPanalyzer
                                         {
                                             strUdsKwpDetails += string.Format(", DID = 0x{0}", diagFrameInfo.services[0].did.ToString("X4"));
                                         }
-
                                         if (diagFrameInfo.services[0].sid == (Byte)UDSSid.UDS_NegResp_)
                                         {
-                                            ///TODO: implement reaction for NRC without value in enum type
                                             strUdsKwpDetails += string.Format("{0}", (UDSNrc)(diagFrameInfo.services[0].parameters[1]));
+                                        }
+                                        if (diagFrameInfo.servicesCount == -1)
+                                        {
+                                            strUdsKwpDetails += string.Format(" - Parse error!");
                                         }
                                     }
                                     else if (tempUdsKwpSelector == 1)
@@ -1707,12 +1699,67 @@ namespace TPanalyzer
                                         {
                                             strUdsKwpDetails += string.Format(", DID = 0x{0}", diagFrameInfo.services[0].did.ToString("X4"));
                                         }
+                                        if (diagFrameInfo.servicesCount == -1)
+                                        {
+                                            strUdsKwpDetails += string.Format(" - Parse error!");
+                                        }
 
-                                        //if (diagFrameInfo.services[0].sid == (Byte)KWPSid.NegResp_)
-                                        //{
-                                        //    ///TODO: implement reaction for NRC without value in enum type
-                                        //    strUdsKwpDetails += string.Format("{0}", (KWPNrc)(diagFrameInfo.services[0].parameters[1]));
-                                        //}
+
+                                        //TODO: KWP NRCs
+                                        //                                    if (diagFrameInfo.services[0].sid == (Byte)KWPSid.NegResp_)
+                                        //                                    {
+                                        //                                        strUdsKwpDetails += string.Format("{0}", (KWPNrc)(diagFrameInfo.services[0].parameters[1]));
+                                        //                                    }
+
+                                    }
+                                }
+                                else
+                                {
+                                    strIsoTpDetails += string.Format(" - No higher layer data!");
+                                }
+                            }
+                            else if (tpInfo.frameType == IsoTpInformation.FrameType.Consecutive)
+                            {
+                                strIsoTpDetails = string.Format("CF, Index = {0}", tpInfo.consIndex.ToString());
+                                if (tpInfo.higherLayerData != null) // consecutive frame with higher layer data is the last one = whole frame is finished
+                                {   // last consecutive frame
+                                    strUdsKwp = strInterface.strData.Substring((tpInfo.byteCount * 3), (3 * (8 - tpInfo.byteCount)));
+                                    if (tpInfo.higherLayerDataLength > 0)
+                                    {
+                                        diagFrameInfo = parseDiagData(tpInfo.higherLayerData, tempUdsKwpSelector);
+                                        diagInfoList.Add(diagFrameInfo);
+                                        if (tempUdsKwpSelector == 0)
+                                        {
+                                            strUdsKwpDetails = string.Format("{0}", (UDSSid)diagFrameInfo.services[0].sid);
+                                            if (diagFrameInfo.services[0].did != -1)
+                                            {
+                                                strUdsKwpDetails += string.Format(", DID = 0x{0}", diagFrameInfo.services[0].did.ToString("X4"));
+                                            }
+
+                                            if (diagFrameInfo.services[0].sid == (Byte)UDSSid.UDS_NegResp_)
+                                            {
+                                                ///TODO: implement reaction for NRC without value in enum type
+                                                strUdsKwpDetails += string.Format("{0}", (UDSNrc)(diagFrameInfo.services[0].parameters[1]));
+                                            }
+                                        }
+                                        else if (tempUdsKwpSelector == 1)
+                                        {
+                                            strUdsKwpDetails = string.Format("{0}", (KWPSid)diagFrameInfo.services[0].sid);
+                                            if (diagFrameInfo.services[0].did != -1)
+                                            {
+                                                strUdsKwpDetails += string.Format(", DID = 0x{0}", diagFrameInfo.services[0].did.ToString("X4"));
+                                            }
+
+                                            //if (diagFrameInfo.services[0].sid == (Byte)KWPSid.NegResp_)
+                                            //{
+                                            //    ///TODO: implement reaction for NRC without value in enum type
+                                            //    strUdsKwpDetails += string.Format("{0}", (KWPNrc)(diagFrameInfo.services[0].parameters[1]));
+                                            //}
+                                        }
+                                    }
+                                    else
+                                    {
+                                        strIsoTpDetails += string.Format(" - No higher layer data!");
                                     }
                                 }
                                 else
@@ -1746,8 +1793,8 @@ namespace TPanalyzer
                     isoTpInfoList.Add(null);
                     diagInfoList.Add(null);
                 }
-                dtTracesA.Rows.Add(new object[] { floatTimestamp, strInterface.strType, strInterface.strChannel, strInterface.strId, strAlias, strInterface.strDirection, dlc, strInterface.strData, strIsoTp, strIsoTpDetails, strUdsKwp, strUdsKwpDetails, strInterface.strOthers });
-                dtTracesB.Rows.Add(new object[] { floatTimestamp, strInterface.strType, strInterface.strChannel, strInterface.strId, strAlias, strInterface.strDirection, dlc, strInterface.strData, strIsoTp, strIsoTpDetails, strUdsKwp, strUdsKwpDetails, strInterface.strOthers });
+                dtTracesA.Rows.Add(new object[] { floatTimestamp, strInterface.strType, strInterface.strChannel, strMessageName, strInterface.strId, strInterface.strDirection, dlc, strInterface.strData, strIsoTp, strIsoTpDetails, strUdsKwp, strUdsKwpDetails, strInterface.strOthers, strAlias });
+                dtTracesB.Rows.Add(new object[] { floatTimestamp, strInterface.strType, strInterface.strChannel, strMessageName, strInterface.strId, strInterface.strDirection, dlc, strInterface.strData, strIsoTp, strIsoTpDetails, strUdsKwp, strUdsKwpDetails, strInterface.strOthers, strAlias });
             }
             rowOfTraceLoaded++;
             this.Invoke((MethodInvoker)delegate
@@ -1941,6 +1988,19 @@ namespace TPanalyzer
                 }
             }
 
+            if (messageNameFilter != "Message")
+            {
+                if (rowFilter == "")
+                {
+                    rowFilter += string.Format("{0}", messageNameFilter);
+                }
+                else
+                {
+                    rowFilter += string.Format("{0} {1}", "AND", messageNameFilter);
+                }
+            }
+
+
             if (idFilter != "ID")
             {
                 if (rowFilter == "")
@@ -1953,7 +2013,7 @@ namespace TPanalyzer
                 }
             }
 
-            if (aliasFilter != "Alias")
+            if (aliasFilter != "ECU")
             {
                 if (rowFilter == "")
                 {
@@ -2087,6 +2147,8 @@ namespace TPanalyzer
             udsDataFilter = "UDS/KWP_Data";
             udsDetailsFilter = "UDS/KWP_Details";
             othersFilter = "Others";
+            aliasFilter = "ECU";
+            messageNameFilter = "Message";
 
             UpdateRowFilters();
         }
@@ -2378,12 +2440,12 @@ namespace TPanalyzer
                             }
                             break;
                         }
-                    case 3: // ID
+                    case 3: // Message name
                         {
-                            DialogResult myResult = myFilterForm.ShowDialog(idFilter);
+                            DialogResult myResult = myFilterForm.ShowDialog(messageNameFilter);
                             if (myResult == DialogResult.OK)
                             {
-                                idFilter = myFilterForm.filterString;
+                                messageNameFilter = myFilterForm.filterString;
                                 UpdateRowFilters();
                             }
                             break;
@@ -2478,6 +2540,17 @@ namespace TPanalyzer
                             }
                             break;
                         }
+                    case 13: // ECU = Alias
+                        {
+                            DialogResult myResult = myFilterForm.ShowDialog(aliasFilter);
+                            if (myResult == DialogResult.OK)
+                            {
+                                aliasFilter = myFilterForm.filterString;
+                                UpdateRowFilters();
+                            }
+                            break;
+                        }
+
                     default:
                         {
                             break;

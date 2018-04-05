@@ -34,7 +34,6 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnMenuLoadTrace = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitTraceWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,8 +76,7 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnMenuLoadTrace,
-            this.toolStripSeparator3,
-            this.exitToolStripMenuItem});
+            this.toolStripSeparator3});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -86,21 +84,14 @@
             // btnMenuLoadTrace
             // 
             this.btnMenuLoadTrace.Name = "btnMenuLoadTrace";
-            this.btnMenuLoadTrace.Size = new System.Drawing.Size(152, 22);
-            this.btnMenuLoadTrace.Text = "Load trace";
+            this.btnMenuLoadTrace.Size = new System.Drawing.Size(154, 22);
+            this.btnMenuLoadTrace.Text = "Load new trace";
             this.btnMenuLoadTrace.Click += new System.EventHandler(this.btnMenuLoadTrace_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(149, 6);
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(151, 6);
             // 
             // editToolStripMenuItem
             // 
@@ -277,7 +268,6 @@
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip cMenuIDHeader;
         private System.Windows.Forms.ToolStripMenuItem hideColumnToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem filterSetupToolStripMenuItem;
