@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
+  <asmv1:assemblyIdentity name="TPanalyzer.exe" version="1.1.0.1" publicKeyToken="3662e8d2eb4081ac" language="neutral" processorArchitecture="msil" type="win32" />
+  <description asmv2:iconFile="TPanalyzer.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
+  <application />
+  <entryPoint>
+    <assemblyIdentity name="TPanalyzer" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <commandLine file="TPanalyzer.exe" parameters="" />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet version="1" class="System.Security.NamedPermissionSet" Name="LocalIntranet" Description="Default rights given to applications on the local intranet" Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!-- UAC Manifest Options
+             If you want to change the Windows User Account Control level replace the 
+             requestedExecutionLevel node with one of the following.
+
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+
+            Specifying requestedExecutionLevel element will disable file and registry virtualization. 
+            Remove this element if your application requires this virtualization for backwards
+            compatibility.
+        -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="5" minorVersion="1" buildNumber="2600" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="4.0.30319.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IDselector.dll" size="16896">
+      <assemblyIdentity name="IDselector" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>oWd1u0Nz1gFgkfjXY7HXhyfz6Urj+4vYQHMxAkOX3RM=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TPanalyzer.exe" size="221112">
+      <assemblyIdentity name="TPanalyzer" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>LBR66ANE5foN/DY0YxIuejBm7+7TmE94bCMbagb+qrY=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TraceTemplate.dll" size="260096">
+      <assemblyIdentity name="TraceTemplate" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>5G6AEha4G2m488kr0GphS9XD5yb+dvdp4sFbTAAZPWQ=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="TPanalyzer.exe.config" size="189">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>6N7MliNbVJSIAIPrecIshMbZ7zEoKLr5SQvud4LDUOw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="TPanalyzer.ico" size="98784">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>3vBJB9nOv609BbrcZ0V8HqK8qVVPaMQfr7lBG8cv1Dc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
+    <application>
+      <!-- A list of the Windows versions that this application has been tested on and is
+           is designed to work with. Uncomment the appropriate elements and Windows will 
+           automatically selected the most compatible environment. -->
+      <!-- Windows Vista -->
+      <!--<supportedOS Id="{e2011457-1546-43c5-a5fe-008deee3d3f0}" />-->
+      <!-- Windows 7 -->
+      <!--<supportedOS Id="{35138b9a-5d96-4fbd-8e2d-a2440225f93a}" />-->
+      <!-- Windows 8 -->
+      <!--<supportedOS Id="{4a2f28e3-53b9-4441-ba9c-d69d4a4a6e38}" />-->
+      <!-- Windows 8.1 -->
+      <!--<supportedOS Id="{1f676c76-80e1-4239-95bb-83d0f6d0da78}" />-->
+      <!-- Windows 10 -->
+      <!--<supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />-->
+    </application>
+  </compatibility>
+<publisherIdentity name="CN=ELMARCO\bednar" issuerKeyHash="d82ab7e257b54e6a4839314934cbd7c1d6ea851e" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>MBPB6mQXrfnt4NkX4yoH/MtVPFfiKx+XkjeQApcd1sY=</DigestValue></Reference></SignedInfo><SignatureValue>oBareycvbEZu4isqSVFQNyGZVBCzpnFwLV0G5c793WVu2nF/5plctk6tH8lCvUkC/t3Gfi4fzIv8uzzkg+o9Xw1KzqsLmNhcsok+yFTbgXL064PMrKamUM8xX/vzRwy3brb9+zv/sZL1NVFyqNpuL2mZSNgt7F5o52dE6AqJVGs=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>vLJSLujtjZ8JULrEi/68pUj1jVoC8jLarGKpWCa5nFwa0WdOP3V5ZDbRHnT5l0ZBO9ajfKZFONykXRSHICmSPikUCTbYbpa6jF4MRSAy2CkyR4rN6StXLZCdxp52hcPEkdusxf2CR23IHW6a86vwmrpjLApV1IINiQMQWyw5WLk=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="c6d61d9702903792971f2be2573c55cbfc072ae317d9e0edf9ad1764eac11330" Description="" Url=""><as:assemblyIdentity name="TPanalyzer.exe" version="1.1.0.1" publicKeyToken="3662e8d2eb4081ac" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=ELMARCO\bednar</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>bN8uTCltgC0DKV0zlic+mc2DgvdzjrEAL3T8zZBh8xY=</DigestValue></Reference></SignedInfo><SignatureValue>lDW+hhVZsI3tSJkaJ5SP9ETLt2ZTnMp2eih24LYnHU1EXyHAlw1RgCY3YQDMLx7YuUaMSD/eOSzs6nk9TtcOCj6hPCiOyR0tt1KlgPniv3Druv89s/fEA7IBAxARYY8iBludVQu2ApJ91tXU6NHJyNFKCQk8kpS+6XqPEj9vF2o=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>vLJSLujtjZ8JULrEi/68pUj1jVoC8jLarGKpWCa5nFwa0WdOP3V5ZDbRHnT5l0ZBO9ajfKZFONykXRSHICmSPikUCTbYbpa6jF4MRSAy2CkyR4rN6StXLZCdxp52hcPEkdusxf2CR23IHW6a86vwmrpjLApV1IINiQMQWyw5WLk=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB0TCCATqgAwIBAgIQFWk18vQY/YtBsrkRjav97jANBgkqhkiG9w0BAQsFADAnMSUwIwYDVQQDHhwARQBMAE0AQQBSAEMATwBcAGIAZQBkAG4AYQByMB4XDTE4MDExNzIxMjczOVoXDTE5MDExODAzMjczOVowJzElMCMGA1UEAx4cAEUATABNAEEAUgBDAE8AXABiAGUAZABuAGEAcjCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAvLJSLujtjZ8JULrEi/68pUj1jVoC8jLarGKpWCa5nFwa0WdOP3V5ZDbRHnT5l0ZBO9ajfKZFONykXRSHICmSPikUCTbYbpa6jF4MRSAy2CkyR4rN6StXLZCdxp52hcPEkdusxf2CR23IHW6a86vwmrpjLApV1IINiQMQWyw5WLkCAwEAATANBgkqhkiG9w0BAQsFAAOBgQCwJ/K1UX2rMKh/f6Lt47KrSdvIdo+oHNBBX0sUw9WuwAMZKC505vlXfJD96P1RQMmwnNl0+laDNGs5h6IK+X1Ty4LhaNX8nJusXRQ4EsUFHACHvgylAXum5Ij1s0oJzuPI6hucYR/C5dDJCW503+JOzUe//Rn4ICtBr8LZO9eCYg==</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
